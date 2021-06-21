@@ -1,4 +1,5 @@
 build
 output
-input
+input/rom
+input/artwork
 *.pyc
