@@ -34,5 +34,5 @@ The resulting files can be used by https://github.com/bzhxx/LCD-Game-Emulator
 
 It's possible to customize the shrinking process by adding some image processing on artwork and graphics.
 For this purpose, a python script is available or must be added in **custom/** directory. 
-Sometimes, an example is better than any explanation. So, have a look on **gnw_ball.py**;
+Sometimes, an example is better than any explanation. So, have a look on **custom/gnw_ball.py**;
 This script customizes the rendering by adding gradient effect, anti-newton rings filter, artwork background shadow and experimental drop shadow effect on each LCD segments.
