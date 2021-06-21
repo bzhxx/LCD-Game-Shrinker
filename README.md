@@ -23,8 +23,7 @@ This tool is used to shrink any MAME artwork and ROM **SM510** family.
 You have to place Artwork file and ROM file in their respective directory **input/artwork** and **input/rom**.
 
 ### Execute
-**Python shrink_it.py** to process all files.
-or
+**Python shrink_it.py** to process all files or
 **Python shrink_it.py input/rom/gnw_mygame_zip** to process a single file.
 
 All intermediate files are created in *build* directory.
