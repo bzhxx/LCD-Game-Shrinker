@@ -27,7 +27,7 @@ You have to place Artwork file and ROM file in their respective directory **inpu
 **Python shrink_it.py input/rom/gnw_mygame_zip** to process a single file.
 
 All intermediate files are created in *build* directory.
-At the end, *shrinked* files are available under *output* directory.
+At the end, resulting files are available under **output/** directory.
 The resulting files can be used by https://github.com/bzhxx/LCD-Game-Emulator
 
 ## Advance usage : Custom rules
