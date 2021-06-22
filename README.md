@@ -29,9 +29,8 @@ You have to place Artwork file and ROM file in their respective directory **inpu
 All intermediate files are created in **build/** directory.
 At the end, resulting files are available under **output/** directory.
 The resulting files can be used in https://github.com/bzhxx/LCD-Game-Emulator
-3
-## Advance usage : Custom rules
 
+## Advance usage : Custom rules
 It's possible to customize the shrinking process by adding some image processing on artwork and graphics.
 For this purpose, a python script is available or must be added in **custom/** directory. 
 Sometimes, an example is better than any explanation. So, have a look on **https://github.com/bzhxx/LCD-Game-Shrinker/blob/main/custom/gnw_ball.py**;
