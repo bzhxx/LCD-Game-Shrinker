@@ -4,7 +4,7 @@ This program permits to shrink MAME high resolution artwork and graphics for por
 
 
 # Environment
-Python (<3.6) script tested under Linux Ubuntu and Windows 10.
+Python (3.6) script tested under Linux Ubuntu and Windows 10.
 
 # Requirements
 The following application need to be installed
