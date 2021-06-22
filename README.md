@@ -28,8 +28,8 @@ You have to place Artwork file and ROM file in their respective directory **inpu
 
 All intermediate files are created in *build* directory.
 At the end, resulting files are available under **output/** directory.
-The resulting files can be used by https://github.com/bzhxx/LCD-Game-Emulator
-
+The resulting files can be used in https://github.com/bzhxx/LCD-Game-Emulator
+3
 ## Advance usage : Custom rules
 
 It's possible to customize the shrinking process by adding some image processing on artwork and graphics.
