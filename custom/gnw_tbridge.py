@@ -25,6 +25,7 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 import rom_config as rom
 
+rom.background_file="BackgroundNS.png"
 
 K1=rom.BTN_RIGHT
 K2=0
