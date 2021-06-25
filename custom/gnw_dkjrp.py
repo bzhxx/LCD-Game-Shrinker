@@ -35,14 +35,14 @@ K3=0
 K4=rom.BTN_A
 rom.BTN_DATA[rom.S1]=K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
 
-K1=rom.BTN_TIME
+K1=rom.BTN_RIGHT
 K2=rom.BTN_UP
 K3=rom.BTN_LEFT
 K4=rom.BTN_DOWN
 rom.BTN_DATA[rom.S2]=K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
 
 K1=rom.BTN_TIME
-K2=rom.BTN_A
-K3=rom.BTN_B
+K2=rom.BTN_B
+K3=rom.BTN_A
 K4=rom.BTN_GAME
 rom.BTN_DATA[rom.S3]=K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
