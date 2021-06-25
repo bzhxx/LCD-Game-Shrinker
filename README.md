@@ -28,7 +28,7 @@ You have to place Artwork file and ROM file in their respective directory **inpu
 
 All intermediate files are created in **build/** directory.
 At the end, resulting files are available under **output/** directory.
-The resulting files can be executed by https://github.com/bzhxx/LCD-Game-Emulator ported on https://github.com/game-and-watch-retro-go
+The resulting files can be executed by https://github.com/bzhxx/LCD-Game-Emulator ported on https://github.com/bzhxx/game-and-watch-retro-go
 
 ## Advanced usage : Custom rules
 It's possible to customize the shrinking process by adding some image processing on artwork and graphics.
