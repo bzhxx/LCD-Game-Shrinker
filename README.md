@@ -12,7 +12,7 @@ The following application need to be installed
  - [x] LZ4 compression command tool
 
 The following Python modules are used
- - [x] import sys, os, subprocess, re, lxml, importlib, zipfile, numpy, urllib.request 
+ - [x] import sys, os, subprocess, re, lxml, importlib, zipfile, numpy, urllib.request, svgutils 
  - [x] from struct import pack
  - [x] from PIL import Image,ImageChops
 
