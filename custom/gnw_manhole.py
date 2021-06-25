@@ -25,6 +25,8 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 import rom_config as rom
 
+rom.flag_lcd_deflicker_level = 0
+
 K1=rom.BTN_RIGHT + rom.BTN_DOWN
 K2=rom.BTN_RIGHT + rom.BTN_UP
 K3=rom.BTN_LEFT  +  rom.BTN_UP

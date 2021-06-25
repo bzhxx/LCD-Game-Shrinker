@@ -57,11 +57,9 @@ def error(s):
     print (rom.mame_fullname+ " ERROR:"+s +' [' +str(rom_name) +']')
     exit()
 
-
 #try to locate tools
 lz4_path = os.environ["LZ4_PATH"] if "LZ4_PATH" in os.environ else "lz4"
 inkscape_path = os.environ["INKSCAPE_PATH"] if "INKSCAPE_PATH" in os.environ else "inkscape"
-
 
 # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', length = 20, fill = "▆"):
@@ -495,18 +493,16 @@ if (rom.drop_shadow ) and (not rom.flag_rendering_lcd_inverted):
 list_obj = [i for i in tab_id if i != 0]
 obj_to_extract = ';'.join(list_obj)
 
-if os.name=='posix':
+if os.name == 'posix':
     obj_to_extract ="\'" + obj_to_extract + "\'"
 
 if rom.flag_rendering_lcd_inverted:
-
   cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-area-snap" + " --export-background=#000000"+" --export-type=png"
 else:
-
   cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-area-snap" + " --export-background=#FFFFFF"+" --export-type=png"
-  #cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-background=#FFFFFF"+" --export-type=png"
   
 cmd= inkscape_path + cmd
+
 log(cmd)
 
 inkscape_output=subprocess.check_output(cmd,stderr=subprocess.DEVNULL,shell=True)
@@ -708,6 +704,27 @@ with open(rom_filename, "wb") as out_file:
   out_file.write(rom.CPU_TYPE.encode("utf-8"))
   rom_offset+=8
 
+  ## ROM SIGNATURE   (8 bytes)
+  out_file.write(rom_name.rjust(8)[-8:].encode("utf-8"))
+  rom_offset+=8
+  
+  ### Address counter time used by the program to manage it RTC (2 bytes)
+  out_file.write(pack("B",rom.ADD_TIME_HOUR))
+  out_file.write(pack("B",rom.ADD_TIME_SEC))
+  rom_offset+=2
+  
+  ### byte_spare1     	    (1 byte)
+  out_file.write(pack("B", 0))
+  rom_offset+=1
+  
+  ### byte_spare2     	    (1 byte)
+  out_file.write(pack("B", 0))
+  rom_offset+=1
+  
+  ### int_spare2     	    (4 bytes)
+  out_file.write(pack("<l", 0))
+  rom_offset+=4
+  
   ### ROM Flags         (4bytes)
   out_file.write(pack("<l", GW_FLAGS))
   rom_offset+=4

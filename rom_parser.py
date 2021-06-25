@@ -294,24 +294,31 @@ def set_parameters(rom_name,mame_rom_dir):
         if mame_class_found :
           if (myline.find('sm510_common') > -1) :
             rom.CPU_TYPE = 'SM510__\0'
+            rom.flag_lcd_deflicker_level = 1
             break
           if (myline.find('sm511_common') > -1) :
             rom.CPU_TYPE = 'SM511__\0'
+            rom.flag_lcd_deflicker_level = 1
             break
           if (myline.find('sm512_common') > -1) :
             rom.CPU_TYPE = 'SM512__\0'
+            rom.flag_lcd_deflicker_level = 1
             break
           if (myline.find('sm5a_common') > -1) :
+            rom.flag_lcd_deflicker_level = 2
             rom.CPU_TYPE = 'SM5A___\0'
             break
           if (myline.find('kb1013vk12_common') > -1) :
+            rom.flag_lcd_deflicker_level = 2
             rom.CPU_TYPE = 'SM5A___\0'
             break
           if (myline.find('sm510_tiger') > -1) :
             rom.CPU_TYPE = 'SM510__\0'
+            rom.flag_lcd_deflicker_level = 1
             break
           if (myline.find('sm511_tiger2bit') > -1) :
             rom.CPU_TYPE = 'SM511__\0'
+            rom.flag_lcd_deflicker_level = 1
             break
         myline = myfile.readline()
   
