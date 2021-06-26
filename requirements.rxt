@@ -1,0 +1,13 @@
+svgutils
+sys
+os
+subprocess
+re
+lxml
+importlib
+zipfile
+numpy
+urllib.request
+svgutils
+struct
+Pillow
