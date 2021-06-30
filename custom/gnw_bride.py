@@ -59,9 +59,6 @@ img_background.save(img_background_file)
 rom.mame_fullname='Bride'
 rom.mame_parent=""
 
-rom.segments_file = "gnw_bride.svg"
-rom.program_file = "brd-101"
-
 rom.CPU_TYPE="SM510__\0"
 
 # background coords from MAME layout
@@ -80,7 +77,7 @@ rom.screen_height=1080
 # False : LCD segments are black, by default the background is the artwork.
 #True : LCD segments are white, by default the background is black.
 rom.flag_rendering_lcd_inverted = False
-rom.lcd_deflicker_level = 1
+rom.lcd_deflicker_level = 0
 
 #Enable drop shadow rendering effect
 rom.drop_shadow = False
