@@ -73,7 +73,7 @@ img_background_file = os.path.join(rom.mame_rom_dir , rom.background_file)
 img_background.save(img_background_file)
         
 ### #you can also use fanart
-# background_file   = "ballbg.png"
+#rom.background_file   = "ballbg.png"
 
 #Input rom.R2 IN.0
 K1=rom.BTN_TIME
