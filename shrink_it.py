@@ -51,10 +51,10 @@ def log(s):
     print (s)
 
 def warm(s):
-    print (rom.mame_fullname+ " WARNING:"+s +' ['+str(rom_name) +']')
+    print ( " WARNING:"+s +' ['+str(rom_name) +']')
 
 def error(s):
-    print (rom.mame_fullname+ " ERROR:"+s +' [' +str(rom_name) +']')
+    print (" ERROR:"+s +' [' +str(rom_name) +']')
     exit()
 
 #try to locate tools
@@ -256,11 +256,11 @@ else:
 
 if not os.path.isfile(segments_file):
   #Error there is no .svg file
-  error('No segment file (.svg)')
+    error('No segment file ('+segments_file+')')
 
 if not os.path.isfile(program_file):
   #Error, there is no program file
-  error('No program_file')
+  error('No program_file ('+program_file+')')
 
 ### Adapt segments file to target
 printProgressBar(1, 3, prefix = bar_prefix, suffix = 'Load segments  ')

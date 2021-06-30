@@ -107,7 +107,6 @@ import os,sys,urllib.request,lxml
 
 import rom_config as rom
 
-#DEBUG = True
 DEBUG = False
 
 def log(s):
@@ -149,13 +148,14 @@ def set_parameters(rom_name,mame_rom_dir):
   rom.program_file="none"
   rom.melody_file="none"
 
-  ## Default values
-  segments_file   = rom_name+".svg"
 
   #dual screens
-  segments_top_file     =rom_name+"_tos.path.svg"
-  segments_bottom_file  =rom_name+"_bottom.svg"
+  rom.segments_top_file ="none"
+  rom.segments_bottom_file = "none"
 
+  rom.segments_left_file = "none"
+  rom.segments_right_file = "none"
+  
   rom.dual_screen_vert=False
   rom.dual_screen_hor=False
 
@@ -216,7 +216,7 @@ def set_parameters(rom_name,mame_rom_dir):
           rom.mame_class  =line_mame[6]
           rom.mame_init  =line_mame[7]
           rom.mame_company=line_mame[8]
-          rom.mame_fullname=line_mame[9].strip().strip('"').strip().strip('"')
+          rom.mame_fullname=myline.split("\"")[3]
           rom.found = True
 
       except:
@@ -274,8 +274,8 @@ def set_parameters(rom_name,mame_rom_dir):
           rom.segments_right_file=os.path.basename(f)
           rom.dual_screen_hor= True
 
-  #single screen
-  rom.segments_file = rom_name+seg_extension
+  #single screens
+        rom.segments_file=os.path.basename(f)
 
   # GET CPU SM5A SM510 SM511 SM512 or KB
   # Add sm510_tiger, sm511_tiger2bit supported
@@ -322,12 +322,16 @@ def set_parameters(rom_name,mame_rom_dir):
             break
         myline = myfile.readline()
   
+    log(rom.CPU_TYPE)
+    log(rom.flag_lcd_deflicker_level)
+    
      # Get Background and screen dimensions from MAME layout artwork file
     layout_file=os.path.join(mame_rom_dir,'default.lay')
     tree = lxml.etree.parse(layout_file)
     layout_root = tree.getroot()
     rom.layout_found = False
   
+    # First tentative look for 'background' & 'only' in the name view 
     for x in layout_root:
   
       if str(x.tag) == 'view':
@@ -393,6 +397,76 @@ def set_parameters(rom_name,mame_rom_dir):
               rom.layout_found = True
   
           log('END -------------------------------------------------------')
+          
+    # Second tentative look for 'background' in the name view 
+    if not rom.layout_found:
+        for x in layout_root:
+        
+          if str(x.tag) == 'view':
+            if (str(x.attrib).upper().find('BACK' ) > -1) :
+              log('START ----------------------------------------------------')
+              log(x.attrib)
+              # log('-BOUND-')
+        
+              # bounds=x.find('bounds')
+              # bound_x = int(bounds.get('x'))
+              # bound_y = int(bounds.get('y'))
+              # bound_width= int(bounds.get('width'))
+              # bound_height= int(bounds.get('height'))
+        
+              log('-SCREEN-')
+        
+              rom.screen=x.find('screen')
+              screen_bounds =rom.screen.find('bounds')
+              rom.screen_x = int(screen_bounds.get('x'))
+              rom.screen_y = int(screen_bounds.get('y'))
+              rom.screen_width= int(screen_bounds.get('width'))
+              rom.screen_height= int(screen_bounds.get('height'))
+              log('-ELEMENTS/OVERLAY-')
+        
+              all_element=x.findall('element')
+              for element in all_element:
+        
+                element_bounds =element.find('bounds')
+                log(element.attrib)
+                log(element_bounds.attrib)
+                if (str(element.attrib).upper().find('GROUND' ) > -1) or \
+                  (str(element.attrib).upper().find('BG' ) > -1) or \
+                  (str(element.attrib).upper().find('OVERLAY' ) > -1) :
+        
+                  background_ref = element.get('ref')
+        
+                  log(element.attrib)
+                  log(element_bounds.attrib)
+                  rom.background_x = int(element_bounds.get('x'))
+                  rom.background_y = int(element_bounds.get('y'))
+                  rom.background_width= int(element_bounds.get('width'))
+                  rom.background_height= int(element_bounds.get('height'))
+                  rom.layout_found = True
+        
+        
+              all_overlay =x.findall('overlay')
+              for element in all_overlay:
+        
+                element_bounds =element.find('bounds')
+                log(element.attrib)
+                log(element_bounds.attrib)
+                if (str(element.attrib).upper().find('GROUND' ) > -1) or \
+                  (str(element.attrib).upper().find('BG' ) > -1) or \
+                  (str(element.attrib).upper().find('OVERLAY' ) > -1) :
+        
+                  background_ref = element.get('ref')
+                  if background_ref == None:
+                    background_ref = element.get('element')
+                  log(element.attrib)
+                  log(element_bounds.attrib)
+                  rom.background_x = int(element_bounds.get('x'))
+                  rom.background_y = int(element_bounds.get('y'))
+                  rom.background_width= int(element_bounds.get('width'))
+                  rom.background_height= int(element_bounds.get('height')  )
+                  rom.layout_found = True
+        
+              log('END -------------------------------------------------------')
   
     if rom.layout_found:
       # look for the artwork file name
