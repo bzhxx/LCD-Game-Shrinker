@@ -1,6 +1,12 @@
 
 # LCD-Game-Shrinker
-This program permits to shrink MAME SM510 righ resolution artwork and graphics for portable device running LCD-Game-Emulator : https://github.com/bzhxx/LCD-Game-Emulator
+This program permits to shrink MAME ROM & Artwork of LCD handheld devices (Game & Watch, Konami, Tiger, Elektronika,...).
+
+High resolution artworks are mixed, downscaled and color reduced to match portable device performances.
+
+LCD segments are resized and extracted from Scalable Vector Graphics with drop shadow effect.
+
+Finally, a compressed data file is created including all relevant information for portable device running LCD-Game-Emulator : https://github.com/bzhxx/LCD-Game-Emulator
 
 
 # Environment
