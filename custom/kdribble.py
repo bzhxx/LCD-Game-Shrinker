@@ -27,17 +27,17 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-rom.background_file="Background.png"
+rom.background_file="bg.jpg"
 
 rom.background_x=0
 rom.background_y=0
-rom.background_width=2617
-rom.background_height=1876
+rom.background_width=1524
+rom.background_height=1080
 
 rom.screen_x=0
 rom.screen_y=0
-rom.screen_width=2617
-rom.screen_height=1876
+rom.screen_width=1524
+rom.screen_height=1080
 
 K1=rom.BTN_LEFT
 K2=rom.BTN_UP
