@@ -1,6 +1,12 @@
 
 # LCD-Game-Shrinker
-This program permits to shrink MAME high resolution artwork and graphics for portable device running LCD-Game-Emulator : https://github.com/bzhxx/LCD-Game-Emulator
+This program permits to shrink MAME ROM & Artwork of LCD handheld devices (Game & Watch, Konami, Tiger, Elektronika,...).
+
+High resolution artworks are mixed, downscaled and color reduced to match portable device performances.
+
+LCD segments are resized and extracted from Scalable Vector Graphics with drop shadow effect.
+
+Finally, a compressed data file is created including all relevant information for portable device running LCD-Game-Emulator : https://github.com/bzhxx/LCD-Game-Emulator
 
 
 # Environment
@@ -12,7 +18,7 @@ The following application need to be installed
  - [x] LZ4 compression command tool
 
 The following Python modules are used
- - [x] import sys, os, subprocess, re, lxml, importlib, zipfile, numpy, urllib.request 
+ - [x] import sys, os, subprocess, re, lxml, importlib, zipfile, numpy, urllib.request, svgutils 
  - [x] from struct import pack
  - [x] from PIL import Image,ImageChops
 
@@ -28,7 +34,7 @@ You have to place Artwork file and ROM file in their respective directory **inpu
 
 All intermediate files are created in **build/** directory.
 At the end, resulting files are available under **output/** directory.
-The resulting files can be used in https://github.com/bzhxx/LCD-Game-Emulator
+The resulting files can be executed by https://github.com/bzhxx/LCD-Game-Emulator ported on https://github.com/bzhxx/game-and-watch-retro-go
 
 ## Advanced usage : Custom rules
 It's possible to customize the shrinking process by adding some image processing on artwork and graphics.
