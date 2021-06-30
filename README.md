@@ -1,6 +1,6 @@
 
 # LCD-Game-Shrinker
-This program permits to shrink MAME high resolution artwork and graphics for portable device running LCD-Game-Emulator : https://github.com/bzhxx/LCD-Game-Emulator
+This program permits to shrink MAME SM510 righ resolution artwork and graphics for portable device running LCD-Game-Emulator : https://github.com/bzhxx/LCD-Game-Emulator
 
 
 # Environment
