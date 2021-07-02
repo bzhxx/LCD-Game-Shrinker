@@ -77,7 +77,7 @@ rom.screen_height=1080
 # False : LCD segments are black, by default the background is the artwork.
 #True : LCD segments are white, by default the background is black.
 rom.flag_rendering_lcd_inverted = False
-rom.lcd_deflicker_level = 0
+rom.flag_lcd_deflicker_level = 0
 
 #Enable drop shadow rendering effect
 rom.drop_shadow = False
