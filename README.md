@@ -14,8 +14,8 @@ Python (3.6) script tested under Linux Ubuntu and Windows 10.
 
 # Requirements
 The following application need to be installed
- - [x] Inkscape (v1.10 recommended) https://inkscape.org
- - [x] LZ4 compression command tool
+ - [x] Inkscape (v1.02 or v1.10 recommended) https://inkscape.org
+ - [x] LZ4 compression command tool https://github.com/lz4
 
 The following Python modules are used
  - [x] import sys, os, subprocess, re, lxml, importlib, zipfile, numpy, urllib.request, svgutils 
