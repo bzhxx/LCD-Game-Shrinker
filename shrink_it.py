@@ -108,10 +108,12 @@ artwork_file=os.path.join(artwork_path,rom_name+".zip")
 
 # Create directories to build things
 built_root = os.path.join('.',"build")
+preview_root = os.path.join('.',"preview")
 rom.build_dir =os.path.join(built_root,rom_name)
 rom.mame_rom_dir = os.path.join(rom.build_dir ,"original")
 
 osmkdir(built_root)
+osmkdir(preview_root)
 osmkdir(rom.build_dir)
 osmkdir(rom.mame_rom_dir)
 
@@ -172,7 +174,7 @@ MAME_back_file = os.path.join(rom.build_dir,"MAME_background.png")
 
 jpeg_background = os.path.join(rom.build_dir,"gnw_background.jpg")
 
-# intermediate ROM file (raw / uncompressed) to compress as LZ4 payload
+# intermediate ROM file (raw / uncompressed)
 # without JPEG background
 # with or without 565 16bits background
 
@@ -291,7 +293,7 @@ originalSVG.moveto(rom.screen_x-rom.background_x,rom.screen_y-rom.background_y)
 MAME_figure = svgutils.compose.Figure(rom.background_width,rom.background_height, originalSVG)
 MAME_figure.save(MAME_seg_file)
 
-## Rescale the Segments file to LCD Game&Watch scale with border
+## Rescale the Segments file to LCD Game&Watch scale
 #Get segments from original segments file
 ### Adapt segments file to target
 printProgressBar(2, 3, prefix = bar_prefix, suffix = 'Shrink segments', length = 20)
@@ -352,7 +354,70 @@ with open(seg_file,"r") as input_file :
       else:
         output_file.write(content)
 
-######################
+###################################################################################################
+### Create a preview of the final rendering
+###################################################################################################
+#Change the svg source file if drop_shadow filter feature is enabled
+if (rom.drop_shadow ) and (not rom.flag_rendering_lcd_inverted):
+  seg_preview_file = seg_shadow_file
+else:
+  seg_preview_file = seg_file
+
+preview_file = os.path.join(preview_root,rom.mame_fullname.replace(":","")+".png")
+seg_png_file = os.path.join(rom.build_dir,rom.name+".png")
+
+if rom.flag_rendering_lcd_inverted:
+  cmd =  " "+seg_preview_file+" --export-type=png --export-overwrite"+ " --export-background=#000000 --export-background-opacity=1"+" --export-type=png"+" -o "+seg_png_file
+else:
+  cmd =  " "+seg_preview_file+" --export-type=png --export-overwrite"+ " --export-background=#FFFFFF --export-background-opacity=1"+" --export-type=png"+" -o "+seg_png_file
+
+cmd = inkscape_path+cmd 
+inkscape_output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL,shell=True)      
+log(inkscape_output) 
+
+
+#mix background and segment to get a preview
+background_preview = Image.open(back_file).convert('RGB')
+segment_preview = Image.open(seg_png_file).convert('RGB').resize((background_preview.size))
+preview = Image.new("RGB", (background_preview.size))
+preview  = ImageChops.multiply(background_preview, segment_preview)
+
+unit= Image.open("./custom/unit_x206y99.png").convert('RGB')
+unit.paste(preview,(206,99))
+
+# save it
+unit.save(preview_file)
+
+###################################################################################################
+### open/save svg file using Inkscape (workaround to fix modification applied on path name by Inkscape)
+###################################################################################################
+seg_file_fix =os.path.join(rom.build_dir,"segments_fix.svg")
+cmd = " "+ seg_file + " --query-all"+" --export-overwrite --export-type=svg" + " -o " + seg_file_fix
+cmd = inkscape_path + cmd
+
+log(cmd)
+
+inkscape_output=subprocess.check_output(cmd,stderr=subprocess.DEVNULL,shell=True)
+log(inkscape_output)
+
+seg_file = seg_file_fix
+
+#####
+
+seg_shadow_file_fix =os.path.join(rom.build_dir,"segments_shadow_fix.svg")
+cmd = " "+ seg_shadow_file + " --query-all"+" --export-overwrite --export-type=svg" + " -o " + seg_shadow_file_fix
+cmd = inkscape_path + cmd
+
+log(cmd)
+
+inkscape_output=subprocess.check_output(cmd,stderr=subprocess.DEVNULL,shell=True)
+log(inkscape_output)
+
+seg_shadow_file = seg_shadow_file_fix
+ 
+###################################################################################################
+## parse all the objects in the svg file and keep only relevant ones
+###################################################################################################
 
 # object dimensions index : returned by Inkscape query
 ID=0
@@ -394,7 +459,9 @@ wr.close()
 wr = open(SGD_FILE_4BITS, 'w')
 wr.close()
 
-#Get all objects from svg file using Inkscape
+#Get all objects from svg file using Inkscape 
+#it's important to extract x,y coordinates from 'no shadow' segment file
+#because injecting drop shadow effect change original coordinates
 objects_all = subprocess.check_output([inkscape_path, "--query-all",seg_file],stderr=subprocess.DEVNULL)
 log(objects_all)
 
@@ -482,7 +549,9 @@ for obj in objects_all.splitlines():
 
       tab_id[seg_pos] = obj_id
 
-## Extract all segments
+###################################################################################################
+### Extract all segments
+###################################################################################################
 #Change the svg source file if drop_shadow filter feature is enabled
 if (rom.drop_shadow ) and (not rom.flag_rendering_lcd_inverted):
   seg_file = seg_shadow_file
@@ -497,9 +566,9 @@ if os.name == 'posix':
     obj_to_extract ="\'" + obj_to_extract + "\'"
 
 if rom.flag_rendering_lcd_inverted:
-  cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-area-snap" + " --export-background=#000000"+" --export-type=png"
+  cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-overwrite --export-area-snap" + " --export-background=#000000"+" --export-type=png"
 else:
-  cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-area-snap" + " --export-background=#FFFFFF"+" --export-type=png"
+  cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-overwrite --export-area-snap" + " --export-background=#FFFFFF"+" --export-type=png"
   
 cmd= inkscape_path + cmd
 
@@ -658,8 +727,9 @@ with open(BTN_FILE, "wb") as out_file:
   for c in rom.BTN_DATA:
     out_file.write(pack("<I", int(c)))
 
-#####This section elaborates the rom file ######
-
+###################################################################################################
+### This section elaborates the rom file
+###################################################################################################
 ### Build ROM file
 rom_offset=0
 
