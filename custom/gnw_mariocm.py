@@ -26,16 +26,16 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-        #Input R(3)
-K1=rom.BTN_A
-K2=rom.BTN_RIGHT
-K3=rom.BTN_LEFT
-K4=0
-rom.BTN_DATA[rom.S1]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+# Input R(3)
+K1 = rom.BTN_A
+K2 = rom.BTN_RIGHT
+K3 = rom.BTN_LEFT
+K4 = 0
+rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-        #Input R(4)
-K1=rom.BTN_GAME
-K2=rom.BTN_B
-K3=rom.BTN_A
-K4=rom.BTN_TIME
-rom.BTN_DATA[rom.S2]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)        
+# Input R(4)
+K1 = 0
+K2 = rom.BTN_TIME
+K3 = rom.BTN_GAME
+K4 = 0
+rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)

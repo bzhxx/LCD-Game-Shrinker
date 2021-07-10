@@ -116,7 +116,7 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 #S1(+R1) to piezo FLAG_SOUND_S1R1_PIEZO
 
 """
-#WARNING : this file is used to share the ROM parameters along the building processs
+# WARNING : this file is used to share the ROM parameters along the building processs
 # if you want to customize some of parameters for a specific ROM, it's better to create
 # a script in in the custom directory
 #######################################################################################
@@ -126,10 +126,10 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 flag_background_jpeg = False
 #flag_background_jpeg = True
 
-#For JPEG compressed
+# For JPEG compressed
 jpeg_quality = 90
 
-#If uncompressed you can reduce the background resolution
+# If uncompressed you can reduce the background resolution
 # 1 no reduction RGB565
 # 2 (-1 bit) resolution RGB454
 # 4 (-2 bit) resolution RGB343
@@ -145,39 +145,39 @@ background_resolution = RGB565
 flag_segments_4bits = True
 #flag_segments_4bits = False
 
-#Defined the LCD deflicker level
-#0 : filter is disabled
-#1 : medium filtering
-#2 : high fltering
+# Defined the LCD deflicker level
+# 0 : filter is disabled
+# 1 : medium filtering
+# 2 : high fltering
 flag_lcd_deflicker_level = 2
 
-### ROM files
+# ROM files
 background_file = "none"
 segments_file = "none"
 program_file = "none"
 melody_file = "none"
 
-#dual screen
-segments_top_file ="none"
-segments_bottom_file="none"
-segments_left_file ="none"
-segments_right_file="none"
+# dual screen
+segments_top_file = "none"
+segments_bottom_file = "none"
+segments_left_file = "none"
+segments_right_file = "none"
 
-background_top_file= "none"
-background_bottom_file= "none"
-background_left_file= "none"
-background_right_file= "none"
+background_top_file = "none"
+background_bottom_file = "none"
+background_left_file = "none"
+background_right_file = "none"
 
-#dual screen ?
-dual_screen_vert= False
-dual_screen_hor= False
+# dual screen ?
+dual_screen_vert = False
+dual_screen_hor = False
 
-#error indication
+# error indication
 found = False
 layout_found = False
 
-#Warum user no custom script
-#at least keys are undefined
+# Warum user no custom script
+# at least keys are undefined
 custom_script_notfound = False
 
 mame_rom_dir = "_"
@@ -185,53 +185,53 @@ build_dir = "_"
 rom_name = "_"
 
 # MAME constructor structure
-mame_year=0
-mame_name=0
-mame_parent=0
-mame_comp=0
-mame_machine=0
-mame_input=0
-mame_class =0
-mame_init =0
-mame_company=0
-mame_fullname="'unknown game'"
-mame_flags =0
+mame_year = 0
+mame_name = 0
+mame_parent = 0
+mame_comp = 0
+mame_machine = 0
+mame_input = 0
+mame_class = 0
+mame_init = 0
+mame_company = 0
+mame_fullname = "'unknown game'"
+mame_flags = 0
 
-CPU_TYPE="NOCPU__\0"
+CPU_TYPE = "NOCPU__\0"
 
 # background coords from MAME layout
-background_x=0
-background_y=0
-background_width=0
-background_height=0
+background_x = 0
+background_y = 0
+background_width = 0
+background_height = 0
 
 # screen coords from MAME layout
-screen_x=0
-screen_y=0
-screen_width=0
-screen_height=0
+screen_x = 0
+screen_y = 0
+screen_width = 0
+screen_height = 0
 
-#use to define the right way to proceed the LCD segments blending
+# use to define the right way to proceed the LCD segments blending
 # False : LCD segments are black, by default the background is the artwork.
-#True : LCD segments are white, by default the background is black.
+# True : LCD segments are white, by default the background is black.
 flag_rendering_lcd_inverted = False
 
-#Enable drop shadow rendering effect
-drop_shadow = False
+# Enable drop shadow rendering effect
+drop_shadow = True
 
 # Buttons mapping
-#up to 8 columns outputs to address 4 inputs (K1..K4)
- #S1..S8 or R1..R4
+# up to 8 columns outputs to address 4 inputs (K1..K4)
+# S1..S8 or R1..R4
 # 2 independants inputs
- #BA,B
+# BA,B
 
-BTN_SIZE=10
-BTN_DATA=[0]*BTN_SIZE
+BTN_SIZE = 10
+BTN_DATA = [0]*BTN_SIZE
 
 # RAM address of the time count
 # used to get consistent time emulation
-ADD_TIME_HOUR=0
-ADD_TIME_SEC=0
+ADD_TIME_HOUR = 0
+ADD_TIME_SEC = 0
 
 
 ###################################################
@@ -239,40 +239,40 @@ ADD_TIME_SEC=0
 
 # left | (up << 1) | (right << 2) | (down << 3) |
 # (a << 4) | (b << 5) | (time << 6) | (game << 7) |
-BTN_LEFT =0x1
-BTN_UP =0x2
-BTN_RIGHT =0x4
-BTN_DOWN =0x8
-BTN_A =0x10
-BTN_B =0x20
-BTN_TIME =0x40
-BTN_GAME =0x80
+BTN_LEFT = 0x1
+BTN_UP = 0x2
+BTN_RIGHT = 0x4
+BTN_DOWN = 0x8
+BTN_A = 0x10
+BTN_B = 0x20
+BTN_TIME = 0x40
+BTN_GAME = 0x80
 
-## SM5A buttons according to R1..R4
-R1=0
-R2=1
-R3=2
-R4=3
+# SM5A buttons according to R1..R4
+R1 = 0
+R2 = 1
+R3 = 2
+R4 = 3
 
-## SM510 buttons S1..S9
-S1=0
-S2=1
-S3=2
-S4=3
-S5=4
-S6=5
-S7=6
-S8=7
+# SM510 buttons S1..S9
+S1 = 0
+S2 = 1
+S3 = 2
+S4 = 3
+S5 = 4
+S6 = 5
+S7 = 6
+S8 = 7
 
-#Direct input BA & B
-BA=8
-B=9
+# Direct input BA & B
+BA = 8
+B = 9
 
 # Piezo buzzer output configuration
-FLAG_SOUND_R1_PIEZO = 1 
+FLAG_SOUND_R1_PIEZO = 1
 FLAG_SOUND_R2_PIEZO = 2
 FLAG_SOUND_R1R2_PIEZO = 3
-FLAG_SOUND_R1S1_PIEZO = 4 
+FLAG_SOUND_R1S1_PIEZO = 4
 FLAG_SOUND_S1R1_PIEZO = 5
 
 flag_sound = FLAG_SOUND_R1_PIEZO

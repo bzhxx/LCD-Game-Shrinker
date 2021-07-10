@@ -29,12 +29,12 @@ import rom_config as rom
 
 K1=0
 K2=0
-K3=rom.BTN_RIGHT
+K3=rom.BTN_RIGHT + rom.BTN_A
 K4=rom.BTN_LEFT  
 rom.BTN_DATA[rom.R3]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=rom.BTN_GAME
-K2=rom.BTN_A
-K3=rom.BTN_B
-K4=rom.BTN_TIME
+K1=0
+K2=rom.BTN_TIME
+K3=rom.BTN_GAME
+K4=0
 rom.BTN_DATA[rom.R4]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)        

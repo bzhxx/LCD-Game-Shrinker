@@ -26,50 +26,50 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-K1=0
-K2=0
-K3=rom.BTN_UP
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S1]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = 0
+K3 = rom.BTN_UP
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=0
-K2=rom.BTN_RIGHT
-K3=rom.BTN_LEFT
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S2]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = rom.BTN_RIGHT
+K3 = rom.BTN_LEFT
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=0
-K2=rom.BTN_DOWN
-K3=0
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S3]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = rom.BTN_DOWN
+K3 = 0
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=rom.BTN_A
-K2=rom.BTN_B
-K3=0
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S4]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = rom.BTN_A
+K2 = rom.BTN_B
+K3 = 0
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S4] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=rom.BTN_TIME
-K2=0
-K3=0
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S5]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = rom.BTN_TIME
+K2 = 0
+K3 = 0
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S5] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=0
-K2=0
-K3=0
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S6]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = 0
+K3 = 0
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S6] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=0
-K2=0
-K3=0
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S7]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = 0
+K3 = 0
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S7] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-#input  B
-rom.BTN_DATA[rom.B]=0
+# input  B
+rom.BTN_DATA[rom.B] = 0
 
-#input BA Sound
-rom.BTN_DATA[rom.BA]=0
+# input BA Sound
+rom.BTN_DATA[rom.BA] = 0

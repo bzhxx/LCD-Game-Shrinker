@@ -27,33 +27,32 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-rom.background_file="bg.jpg"
+rom.background_file = "bg.jpg"
 
-rom.background_x=0
-rom.background_y=0
-rom.background_width=1524
-rom.background_height=1080
+rom.background_x = 0
+rom.background_y = 0
+rom.background_width = 1524
+rom.background_height = 1080
 
-rom.screen_x=0
-rom.screen_y=0
-rom.screen_width=1524
-rom.screen_height=1080
+rom.screen_x = 0
+rom.screen_y = 0
+rom.screen_width = 1524
+rom.screen_height = 1080
 
-K1=rom.BTN_LEFT
-K2=rom.BTN_UP
-K3=rom.BTN_DOWN
-K4=rom.BTN_RIGHT
-rom.BTN_DATA[rom.S1]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = rom.BTN_LEFT
+K2 = rom.BTN_UP
+K3 = rom.BTN_DOWN
+K4 = rom.BTN_RIGHT
+rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=rom.BTN_GAME
-K2=rom.BTN_TIME
-K3=0
-K4=rom.BTN_A
-rom.BTN_DATA[rom.S2]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)     
+K1 = rom.BTN_TIME
+K2 = rom.BTN_B
+K3 = 0
+K4 = rom.BTN_A
+rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=rom.BTN_B
-K2=0
-K3=0
-K4=0
-rom.BTN_DATA[rom.S3]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)    
-
+K1 = rom.BTN_GAME
+K2 = 0
+K3 = 0
+K4 = 0
+rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)

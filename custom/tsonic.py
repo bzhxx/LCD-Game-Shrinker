@@ -26,26 +26,26 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-K1=0
-K2=0
-K3=rom.BTN_UP
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S2]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = 0
+K3 = rom.BTN_UP
+K4 = rom.BTN_GAME
+rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=0
-K2=rom.BTN_RIGHT
-K3=rom.BTN_LEFT
-K4=0
-rom.BTN_DATA[rom.S3]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = rom.BTN_RIGHT
+K3 = rom.BTN_LEFT
+K4 = 0
+rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=0
-K2=rom.BTN_DOWN
-K3=0
-K4=0
-rom.BTN_DATA[rom.S4]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = 0
+K2 = rom.BTN_DOWN
+K3 = 0
+K4 = 0
+rom.BTN_DATA[rom.S4] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1=rom.BTN_A
-K2=0
-K3=0
-K4=0
-rom.BTN_DATA[rom.S5]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+K1 = rom.BTN_A
+K2 = 0
+K3 = 0
+K4 = 0
+rom.BTN_DATA[rom.S5] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)

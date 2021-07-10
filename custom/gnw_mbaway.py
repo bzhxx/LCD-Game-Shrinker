@@ -25,17 +25,17 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 import rom_config as rom
 
-rom.flag_rendering_lcd_inverted=True
+rom.flag_rendering_lcd_inverted = True
 rom.background_resolution = rom.RGB343
 
-K1=rom.BTN_A
-K2=rom.BTN_RIGHT
-K3=rom.BTN_LEFT
-K4=0
-rom.BTN_DATA[rom.S1]=K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
+K1 = rom.BTN_A
+K2 = rom.BTN_RIGHT
+K3 = rom.BTN_LEFT
+K4 = 0
+rom.BTN_DATA[rom.S1] = K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
 
-K1=rom.BTN_TIME
-K2=rom.BTN_B
-K3=rom.BTN_A
-K4=rom.BTN_GAME
-rom.BTN_DATA[rom.S2]=K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
+K1 = 0
+K2 = rom.BTN_TIME
+K3 = rom.BTN_GAME
+K4 = 0
+rom.BTN_DATA[rom.S2] = K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)

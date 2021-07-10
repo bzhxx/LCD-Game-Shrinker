@@ -1,4 +1,5 @@
 build
 output
+preview
 *.pyc
 *.zip
