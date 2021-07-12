@@ -33,25 +33,18 @@ rom.width_border_ratio = 10/100
 rom.height_border_ratio = 0
 
 # Input S1
-K1 = 0
-K2 = 0
-K3 = 0
-K4 = rom.BTN_A
-rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
-
-# Input S2
-K1 = rom.BTN_RIGHT
+K1 = rom.BTN_LEFT
 K2 = rom.BTN_UP
-K3 = rom.BTN_LEFT
+K3 = rom.BTN_RIGHT
 K4 = rom.BTN_DOWN
-rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # Input S2
 K1 = 0
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
 K4 = 0
-rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # Backgrounds Only No shadow layout
 
