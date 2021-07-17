@@ -52,35 +52,5 @@ K3 = rom.BTN_LEFT
 K4 = rom.BTN_DOWN
 rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Backgrounds Only (No Shadow) layout
-
-# x,y offset of Bound
-rom.bound_x = 0
-rom.bound_y = 0
-
-# information of the 2 different backgrounds
-rom.background_width = 2463
-rom.background_height = 776
-
-rom.background_topleft_xy = (0, 0)
-rom.background_topleft_size = (1214, 776)
-
-rom.background_bottomright_xy = (1249, 0)
-rom.background_bottomright_size = (1214, 776)
-
-rom.background_topleft_file = "Screen-LeftNS.png"
-rom.background_bottomright_file = "Screen-RightNS.png"
-
-# Segments .svg file position and size
-rom.topleft_x = -19
-rom.topleft_y = -47
-rom.topleft_width = 1280
-rom.topleft_height = 855
-
-rom.bottomright_x = 1201
-rom.bottomright_y = -65
-rom.bottomright_width = 1300
-rom.bottomright_height = 853
-
 # convert it to a single screen
 d2s.set_single_screen()

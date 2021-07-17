@@ -25,19 +25,46 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
 import rom_config as rom
+from custom.rotate_screen import rotate_screen
+from custom.dual2single_screen import set_single_screen
 
-import custom.dual2single_screen as d2s
+#Enable the following line to rotate the screen rendering
+rom.rotate = True
 
-# define width and height borders to keep an acceptable ratio
-rom.width_border_ratio = 10/100
-rom.height_border_ratio = 0
+if rom.rotate:
+    # define width and height borders to keep an acceptable ratio
+    rom.width_border_ratio = 0
+    rom.height_border_ratio = 0
 
-# Input S1
-K1 = rom.BTN_DOWN
-K2 = rom.BTN_RIGHT
-K3 = rom.BTN_UP
-K4 = rom.BTN_LEFT
-rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+    # when rotate keys are shift
+    #
+    # normal > rotate
+    #################
+
+    #LEFT > UP
+    #RIGHT> DOWN
+    #UP   > RIGHT
+    #DOWN > LEFT
+
+    # Input S1
+    K1 = rom.BTN_LEFT
+    K2 = rom.BTN_DOWN
+    K3 = rom.BTN_RIGHT
+    K4 = rom.BTN_UP
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
+else:
+
+    # define width and height borders to keep an acceptable ratio
+    rom.width_border_ratio = 10/100
+    rom.height_border_ratio = 0
+
+    # Input S1
+    K1 = rom.BTN_DOWN
+    K2 = rom.BTN_RIGHT
+    K3 = rom.BTN_UP
+    K4 = rom.BTN_LEFT
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # Input S2
 K1 = 0
@@ -46,31 +73,8 @@ K3 = rom.BTN_GAME
 K4 = 0
 rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Backgrounds Only (No Shadow)
-rom.bound_x = 32
-rom.bound_y = 33
-
-rom.background_width = 1296
-rom.background_height = 1669
-
-rom.background_topleft_xy = (32, 33)
-rom.background_topleft_size = (1296, 817)
-
-rom.background_bottomright_xy = (32, 885)
-rom.background_bottomright_size = (1296, 817)
-
-rom.background_topleft_file = "Screen-TopNS.png"
-rom.background_bottomright_file = "Screen-BottomNS.png"
-
-rom.topleft_x = -10
-rom.topleft_y = 4
-rom.topleft_width = 1373
-rom.topleft_height = 896
-
-rom.bottomright_x = 10
-rom.bottomright_y = 865
-rom.bottomright_width = 1357
-rom.bottomright_height = 896
-
 # convert it to a single screen
-d2s.set_single_screen()
+set_single_screen()
+
+if rom.rotate:
+    rotate_screen()

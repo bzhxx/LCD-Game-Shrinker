@@ -24,21 +24,8 @@ __author__ = "bzhxx"
 __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
-import sys, os, subprocess
-import re, lxml
-from struct import pack
-import PIL
-
-import importlib
-
-import svgutils
-from svgutils.compose import*
-import zipfile
-import numpy as np
-
 import rom_config as rom
-
-import custom.dual2single_screen as d2s
+from custom.dual2single_screen import set_single_screen
 
 #define width and height borders to keep an acceptable ratio
 rom.width_border_ratio = 0
@@ -58,32 +45,5 @@ K3=rom.BTN_GAME
 K4=0
 rom.BTN_DATA[rom.S2]=K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)    
 
-# Backgrounds Only (No Shadow) layout
-
-rom.bound_x=0
-rom.bound_y=0
-
-rom.background_width =2463
-rom.background_height =776
-
-rom.background_topleft_size=(1214,776)
-rom.background_bottomright_size=(1214,776)
-
-rom.background_topleft_xy=(0,0)
-rom.background_bottomright_xy=(1249,0)
-
-rom.background_topleft_file="Screen-LeftNS.png"
-rom.background_bottomright_file="Screen-RightNS.png"
-
-rom.topleft_x=-18
-rom.topleft_y=-39
-rom.topleft_width=1244
-rom.topleft_height=836
-
-rom.bottomright_x=1217
-rom.bottomright_y=-86
-rom.bottomright_width=1273
-rom.bottomright_height=882
-
 #convert it to a single screen
-d2s.set_single_screen()
+set_single_screen()

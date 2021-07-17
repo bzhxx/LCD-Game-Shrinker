@@ -26,60 +26,76 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-import custom.dual2single_screen as d2s
+from custom.rotate_screen import rotate_screen
+from custom.dual2single_screen import set_single_screen
+
+#Enable the following line to rotate the screen rendering
+#rom.rotate = True
+
+if rom.rotate:
+    # define width and height borders to keep an acceptable ratio
+    rom.width_border_ratio = 0
+    rom.height_border_ratio = 0
+
+    #when rotate keys are shift
+    #
+    # normal > rotate
+    #################
+
+    #LEFT > UP
+    #RIGHT> DOWN
+    #UP   > RIGHT
+    #DOWN > LEFT
+        # Input S1
+    K1 = 0
+    K2 = 0
+    K3 = 0
+    K4 = rom.BTN_A
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
+    # Input S2
+    K1 = rom.BTN_DOWN
+    K2 = rom.BTN_RIGHT
+    K3 = rom.BTN_UP
+    K4 = rom.BTN_LEFT
+    rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
+    # Input S3
+    K1 = 0
+    K2 = rom.BTN_TIME
+    K3 = rom.BTN_GAME
+    K4 = 0
+    rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
+else:
 
 # define width and height borders to keep an acceptable ratio
-rom.width_border_ratio = 10/100
-rom.height_border_ratio = 0
+    rom.width_border_ratio = 10/100
+    rom.height_border_ratio = 0
 
-# Input S1
-K1 = 0
-K2 = 0
-K3 = 0
-K4 = rom.BTN_A
-rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+    # Input S1
+    K1 = 0
+    K2 = 0
+    K3 = 0
+    K4 = rom.BTN_A
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Input S2
-K1 = rom.BTN_RIGHT
-K2 = rom.BTN_UP
-K3 = rom.BTN_LEFT
-K4 = rom.BTN_DOWN
-rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+    # Input S2
+    K1 = rom.BTN_RIGHT
+    K2 = rom.BTN_UP
+    K3 = rom.BTN_LEFT
+    K4 = rom.BTN_DOWN
+    rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Input S2
-K1 = 0
-K2 = rom.BTN_TIME
-K3 = rom.BTN_GAME
-K4 = 0
-rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
-
-# Backgrounds Only No shadow layout
-
-rom.bound_x = 32
-rom.bound_y = 33
-
-rom.background_width = 1296
-rom.background_height = 1669
-
-rom.background_topleft_xy = (32, 33)
-rom.background_topleft_size = (1296, 817)
-
-rom.background_bottomright_size = (1296, 817)
-rom.background_bottomright_xy = (32, 885)
-
-rom.background_topleft_file = "Screen-TopNS.png"
-rom.background_bottomright_file = "Screen-BottomNS.png"
-
-# Segments
-rom.topleft_x = 16
-rom.topleft_y = 15
-rom.topleft_width = 1339
-rom.topleft_height = 870
-
-rom.bottomright_x = 24
-rom.bottomright_y = 874
-rom.bottomright_width = 1319
-rom.bottomright_height = 854
+    # Input S3
+    K1 = 0
+    K2 = rom.BTN_TIME
+    K3 = rom.BTN_GAME
+    K4 = 0
+    rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # convert it to a single screen
-d2s.set_single_screen()
+set_single_screen()
+
+if rom.rotate:
+    rotate_screen()

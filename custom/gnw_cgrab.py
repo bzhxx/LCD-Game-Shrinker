@@ -25,19 +25,33 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
 
+from custom.rotate_screen import rotate_screen
 import rom_config as rom
 
+#Enable the following line to rotate the screen rendering
+rom.rotate = True
+
 # Force to use Background with drop shadow
-# rom.background_file="Background.png"
+#rom.background_file="Background.png"
 
 # Enable experimental drop shadow effect on LCD segments
 #rom.drop_shadow = True
 
-K1 = rom.BTN_RIGHT
-K2 = rom.BTN_UP
-K3 = rom.BTN_LEFT
-K4 = rom.BTN_DOWN
-rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+if rom.rotate:
+    K1 = rom.BTN_DOWN  # BTN_RIGHT
+    K2 = rom.BTN_RIGHT  # BTN_UP
+    K3 = rom.BTN_UP  # BTN_LEFT
+    K4 = rom.BTN_LEFT  # BTN_DOWN
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
+    rotate_screen()
+
+else:
+    K1 = rom.BTN_RIGHT
+    K2 = rom.BTN_UP
+    K3 = rom.BTN_LEFT
+    K4 = rom.BTN_DOWN
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 K1 = 0
 K2 = rom.BTN_TIME

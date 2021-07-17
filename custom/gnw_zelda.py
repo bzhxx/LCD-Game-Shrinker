@@ -26,41 +26,36 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-import custom.dual2single_screen as d2s
+from custom.dual2single_screen import set_single_screen
+from custom.rotate_screen import rotate_screen
 
-# define width and height borders to keep an acceptable ratio
-rom.width_border_ratio = 10/100
-rom.height_border_ratio = 0
+#Enable the following line to rotate the screen rendering
+#rom.rotate = True
 
-# Backgrounds Only No shadow layout
+if rom.rotate:
+    # define width and height borders to keep an acceptable ratio
+    rom.width_border_ratio = 0
+    rom.height_border_ratio = 0
 
-rom.background_width = 1296
-rom.background_height = 1669
+    # Input S1
+    K1 = rom.BTN_UP
+    K2 = rom.BTN_RIGHT
+    K3 = rom.BTN_DOWN
+    K4 = rom.BTN_LEFT
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-background_top_size = (1296, 817)
-background_bottom_size = (1296, 817)
+else:
 
-rom.bound_x = 32
-rom.bound_y = 33
+    # define width and height borders to keep an acceptable ratio
+    rom.width_border_ratio = 10/100
+    rom.height_border_ratio = 0
 
-rom.background_topleft_xy = (32, 33)
-rom.background_topleft_size = (1296, 817)
-
-rom.background_bottomright_xy = (32, 885)
-rom.background_bottomright_size = (1296, 817)
-
-rom.background_topleft_file = "Screen-TopNS.png"
-rom.background_bottomright_file = "Screen-BottomNS.png"
-
-rom.topleft_x = -6
-rom.topleft_y = -3
-rom.topleft_width = 1378
-rom.topleft_height = 933
-
-rom.bottomright_x = -14
-rom.bottomright_y = 849
-rom.bottomright_width = 1393
-rom.bottomright_height = 915
+    # Input S1
+    K1 = rom.BTN_LEFT
+    K2 = rom.BTN_UP
+    K3 = rom.BTN_RIGHT
+    K4 = rom.BTN_DOWN
+    rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # Input S2
 K1 = rom.BTN_A
@@ -69,14 +64,7 @@ K3 = 0
 K4 = 0
 rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Input S1
-K1 = rom.BTN_LEFT
-K2 = rom.BTN_UP
-K3 = rom.BTN_RIGHT
-K4 = rom.BTN_DOWN
-rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
-
-# Input S2
+# Input S3
 K1 = 0
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
@@ -84,4 +72,7 @@ K4 = 0
 rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # convert it to a single screen
-d2s.set_single_screen()
+set_single_screen()
+
+if rom.rotate:
+    rotate_screen()
