@@ -121,8 +121,8 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 # a script in in the custom directory
 #######################################################################################
 
+rotate = False
 # select if the background is JPEG compressed (lossly) or LZ4 (uncompressed)
-
 flag_background_jpeg = False
 #flag_background_jpeg = True
 

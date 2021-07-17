@@ -31,10 +31,112 @@ import svgutils
 
 import rom_config as rom
 
+DEBUG = True
+
+
+def log(s):
+    if DEBUG:
+        print(s)
+
+
+def get_dual_screen_view():
+
+    # screen x,y offset
+    # rom.bound_x
+    # rom.bound_y
+
+    # backgrounds
+    # rom.background_topleft_xy
+    # rom.background_bottomright_xy
+    # rom.background_topleft_size
+    # rom.background_bottomright_size
+
+    # segments
+    # rom.topleft_x
+    # rom.topleft_y
+    # rom.topleft_width
+    # rom.topleft_height
+
+    # rom.bottomright_x
+    # rom.bottomright_y
+    # rom.bottomright_width
+    # rom.bottomright_height
+
+    # Get Background and screen dimensions from MAME layout artwork file
+    layout_file = os.path.join(rom.mame_rom_dir, 'default.lay')
+    tree = lxml.etree.parse(layout_file)
+    layout_root = tree.getroot()
+    rom.layout_found = False
+
+    # First tentative look for 'background' & 'only' in the name view
+    for x in layout_root:
+        if str(x.tag) == 'view':
+            if (str(x.attrib).upper().find('BACK') > -1) \
+                & (str(x.attrib).upper().find('ONLY') > -1) \
+                    & (str(x.attrib).upper().find('SHADOW') > -1):
+
+                # look for Screen dimension 'bounds'
+                screen_bounds = x.find('bounds')
+                rom.bound_x = int(screen_bounds.get('x'))
+                rom.bound_y = int(screen_bounds.get('y'))
+                rom.background_width = int(screen_bounds.get('width'))
+                rom.background_height = int(screen_bounds.get('height'))
+
+                # look for backgrounds dimension
+                all_element = x.findall('element')
+                for element in all_element:
+                    element_bounds = element.find('bounds')
+
+                    background_ref = element.get('ref')
+
+                    if (str(element.attrib).upper().find('TOP') > -1) or \
+                       (str(element.attrib).upper().find('LEFT') > -1):
+                        rom.background_topleft_xy = (int(element_bounds.get('x')),
+                                                     int(element_bounds.get('y')))
+                        rom.background_topleft_size = (int(element_bounds.get('width')),
+                                                       int(element_bounds.get('height')))
+                        if (str(element.attrib).upper().find('PLAST') < 0) and \
+                                (str(element.attrib).upper().find('FIX') < 0):
+                            rom.background_topleft_file = str(
+                                background_ref)+".png"
+
+                    if (str(element.attrib).upper().find('BOTTOM') > -1) or \
+                            (str(element.attrib).upper().find('RIGHT') > -1):
+                        rom.background_bottomright_xy = (int(element_bounds.get('x')),
+                                                         int(element_bounds.get('y')))
+                        rom.background_bottomright_size = (int(element_bounds.get('width')),
+                                                           int(element_bounds.get('height')))
+                        if (str(element.attrib).upper().find('PLAST') < 0) and \
+                                (str(element.attrib).upper().find('FIX') < 0):
+                            rom.background_bottomright_file = str(
+                                background_ref)+".png"
+
+                # look for segments dimension
+                all_element = x.findall('screen')
+                for element in all_element:
+                    element_bounds = element.find('bounds')
+
+                    if (str(element.attrib).upper().find('0') > -1):
+                        rom.topleft_x = int(element_bounds.get('x'))
+                        rom.topleft_y = int(element_bounds.get('y'))
+                        rom.topleft_width = int(element_bounds.get('width'))
+                        rom.topleft_height = int(element_bounds.get('height'))
+
+                    if (str(element.attrib).upper().find('1') > -1):
+                        rom.bottomright_x = int(element_bounds.get('x'))
+                        rom.bottomright_y = int(element_bounds.get('y'))
+                        rom.bottomright_width = int(
+                            element_bounds.get('width'))
+                        rom.bottomright_height = int(
+                            element_bounds.get('height'))
+
 #  The follow code is generic for horizontal or vertical dual screen
 #  It permits to stick backgrounds and segments according to MAME layout
 
+
 def set_single_screen():
+
+    get_dual_screen_view()
 
     # remove the bound x,y offset
     x, y = rom.background_topleft_xy
@@ -118,11 +220,11 @@ def set_single_screen():
     BR_scale_y = rom.bottomright_height / viewbox_BR_height
 
     svgutils.compose.Figure(rom.background_width, rom.background_height,
-        svgutils.compose.SVG(segments_topleft_file).scale(
-            TL_scale_x,TL_scale_y).move(rom.topleft_x, rom.topleft_y),
-        svgutils.compose.SVG(segments_bottomright_file).scale(BR_scale_x, BR_scale_y).move(
-            rom.bottomright_x, rom.bottomright_y)
-        ).save(seg_file)
+                            svgutils.compose.SVG(segments_topleft_file).scale(
+                                TL_scale_x, TL_scale_y).move(rom.topleft_x, rom.topleft_y),
+                            svgutils.compose.SVG(segments_bottomright_file).scale(BR_scale_x, BR_scale_y).move(
+                                rom.bottomright_x, rom.bottomright_y)
+                            ).save(seg_file)
 
     # Resize and add borders to background
     ############################################################################
@@ -182,3 +284,8 @@ def set_single_screen():
     rom.screen_y = 0
     rom.screen_width = rom.background_width
     rom.screen_height = rom.background_height
+
+
+def dual2single_screen():
+    set_single_screen()
+
