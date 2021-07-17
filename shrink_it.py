@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """ ~LCD Game Shrinker~
@@ -387,6 +387,10 @@ unit.paste(preview,(206,99))
 
 # save it
 unit.save(preview_file)
+
+if rom.rotate:
+    unit = Image.open(preview_file).rotate(90, expand=True)
+    unit.save(preview_file)
 
 ###################################################################################################
 ### open/save svg file using Inkscape (workaround to fix modification applied on path name by Inkscape)
