@@ -39,39 +39,41 @@ gradient_file = "Gradient.png"
 
 # experimental drop shadow effect on LCD segments
 rom.drop_shadow = True
+background_file_path = os.path.join(rom.mame_rom_dir, background_file)
+if os.path.isfile(background_file_path):
 
-background = Image.open(os.path.join(rom.mame_rom_dir, background_file))
-grey_background = Image.open(os.path.join(
-    rom.mame_rom_dir, grey_background_file))
-bubbles = Image.open(os.path.join(rom.mame_rom_dir, bubbles_file))
-gradient = Image.open(os.path.join(rom.mame_rom_dir, gradient_file))
+    background = Image.open(background_file_path)
+    grey_background = Image.open(os.path.join(
+        rom.mame_rom_dir, grey_background_file))
+    bubbles = Image.open(os.path.join(rom.mame_rom_dir, bubbles_file))
+    gradient = Image.open(os.path.join(rom.mame_rom_dir, gradient_file))
 
-grey_background = grey_background.resize((background.size))
-bubbles = bubbles.resize((background.size))
-gradient = gradient.resize((background.size))
+    grey_background = grey_background.resize((background.size))
+    bubbles = bubbles.resize((background.size))
+    gradient = gradient.resize((background.size))
 
-# create an empty image with ALPHA channel
-img_background = Image.new("RGBA", (background.size))
+    # create an empty image with ALPHA channel
+    img_background = Image.new("RGBA", (background.size))
 
-# add main background grey
-img_background = Image.alpha_composite(img_background, grey_background)
+    # add main background grey
+    img_background = Image.alpha_composite(img_background, grey_background)
 
-# add second background
-img_background = Image.alpha_composite(img_background, background)
+    # add second background
+    img_background = Image.alpha_composite(img_background, background)
 
-# add bubbles
-img_background = Image.alpha_composite(img_background, bubbles)
+    # add bubbles
+    img_background = Image.alpha_composite(img_background, bubbles)
 
-# add gradient
-img_background = Image.alpha_composite(img_background, gradient)
+    # add gradient
+    img_background = Image.alpha_composite(img_background, gradient)
 
-# remove ALPHA channel
-img_background = img_background.convert('RGB')
+    # remove ALPHA channel
+    img_background = img_background.convert('RGB')
 
-# save it
-rom.background_file = "composite.png"
-img_background_file = os.path.join(rom.mame_rom_dir, rom.background_file)
-img_background.save(img_background_file)
+    # save it
+    rom.background_file = "composite.png"
+    img_background_file = os.path.join(rom.mame_rom_dir, rom.background_file)
+    img_background.save(img_background_file)
 
 # you can also use fanart
 #rom.background_file   = "ballbg.png"
