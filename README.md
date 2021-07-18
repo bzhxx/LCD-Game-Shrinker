@@ -29,7 +29,7 @@ This tool is used to shrink any MAME artwork and ROM **SM510** family.
 You have to place Artwork file and ROM file in their respective directory **input/artwork** and **input/rom**.
 
 Design, layout and artwork by *hydef* or *DarthMarino* are recommended.
-https://www.mameworld.info/ubbthreads/showflat.php?Cat=&Number=382366&page=0&view=expanded&sb=5&o=&fpart=2&vc=1&new=
+[www.mameworld.info](https://www.mameworld.info/ubbthreads/showflat.php?Cat=&Number=382366&page=0&view=expanded&sb=5&o=&fpart=2&vc=1&new=)
 
 
 ### Execute
