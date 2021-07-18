@@ -407,17 +407,17 @@ log(inkscape_output)
 seg_file = seg_file_fix
 
 #####
-
-seg_shadow_file_fix =os.path.join(rom.build_dir,"segments_shadow_fix.svg")
-cmd = " "+ seg_shadow_file + " --query-all"+" --export-overwrite --export-type=svg" + " -o " + seg_shadow_file_fix
-cmd = inkscape_path + cmd
-
-log(cmd)
-
-inkscape_output=subprocess.check_output(cmd,stderr=subprocess.DEVNULL,shell=True)
-log(inkscape_output)
-
-seg_shadow_file = seg_shadow_file_fix
+if (rom.drop_shadow ) and (not rom.flag_rendering_lcd_inverted):
+    seg_shadow_file_fix =os.path.join(rom.build_dir,"segments_shadow_fix.svg")
+    cmd = " "+ seg_shadow_file + " --query-all"+" --export-overwrite --export-type=svg" + " -o " + seg_shadow_file_fix
+    cmd = inkscape_path + cmd
+    
+    log(cmd)
+    
+    inkscape_output=subprocess.check_output(cmd,stderr=subprocess.DEVNULL,shell=True)
+    log(inkscape_output)
+    
+    seg_shadow_file = seg_shadow_file_fix
  
 ###################################################################################################
 ## parse all the objects in the svg file and keep only relevant ones
