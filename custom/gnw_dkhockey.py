@@ -135,9 +135,9 @@ rom.BTN_DATA[rom.S6] = K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_SERVICE2 ) PORT_CHANGED_CB(input_changed) PORT_NAME("Alarm")
  """
 
-# Connect only "Game B" as a single player game to "GAME" button
+# Connect only "Game A" as a single player game to "GAME" button
 K1 = 0
-K2 = rom.BTN_GAME
-K3 = 0
+K2 = 0
+K3 = rom.BTN_GAME
 K4 = 0
 rom.BTN_DATA[rom.S7] = K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
