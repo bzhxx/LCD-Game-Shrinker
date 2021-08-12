@@ -1,4 +1,5 @@
 svgutils
 lxml
+lz4
 numpy
 Pillow
