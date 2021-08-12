@@ -68,8 +68,8 @@ else:
 
 # Input S2
 K1 = 0
-K2 = rom.BTN_TIME
-K3 = rom.BTN_GAME
+K2 = rom.BTN_GAME
+K3 = rom.BTN_TIME
 K4 = 0
 rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
