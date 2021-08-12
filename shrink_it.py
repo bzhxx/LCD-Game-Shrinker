@@ -31,6 +31,7 @@ import importlib
 
 import svgutils
 import zipfile
+from pyunpack import Archive
 import numpy as np
 
 #ROM default defintion & parser
@@ -88,7 +89,7 @@ if len(sys.argv) < 2:
  rom_file  = "./input/rom/"
 else:
   rom_file  = sys.argv[1]
-  
+
 rom_path = os.path.dirname(rom_file)
 rom_name = os.path.splitext(os.path.basename(rom_file))[0]
 
@@ -97,7 +98,7 @@ if os.path.isdir(rom_file) :
   ## get all files with .zip extension
   ## call this script for each file
   for x in os.listdir(rom_file) :
-    if x.endswith(".zip") :
+    if x.endswith(".zip") or x.endswith(".7z"):
       os.system(sys.executable +" "+ sys.argv[0] + ' ' + os.path.join(rom_path, str(x)))
   exit()
 
@@ -121,8 +122,13 @@ osmkdir(rom.mame_rom_dir)
 osmkdir(output_dir)
 
 #unzip original rom
-with zipfile.ZipFile(rom_file, 'r') as zip_ref:
-  zip_ref.extractall(rom.mame_rom_dir)
+if rom_file.endswith(".zip"):
+    with zipfile.ZipFile(rom_file, 'r') as zip_ref:
+        zip_ref.extractall(rom.mame_rom_dir)
+elif rom_file.endswith(".7z"):
+    Archive(rom_file).extractall(rom.mame_rom_dir)
+else:
+    raise ValueError(f"Unknown extension for rom {rom_file}")
 
 #unzip Artwork
 if os.path.isfile(artwork_file) :
@@ -202,7 +208,7 @@ bar_prefix=(rom.mame_fullname).split(": ",1)[-1].split(" (",1)[0]
 if rom.custom_script_notfound :
     bar_prefix=bar_prefix+'*'
 
-bar_prefix=bar_prefix.ljust(25)    
+bar_prefix=bar_prefix.ljust(25)
 printProgressBar(1, 3, prefix = bar_prefix, suffix = 'Shrink artwork  ')
 
 # check if it exists
@@ -371,9 +377,9 @@ if rom.flag_rendering_lcd_inverted:
 else:
   cmd =  " "+seg_preview_file+" --export-type=png --export-overwrite"+ " --export-background=#FFFFFF --export-background-opacity=1"+" --export-type=png"+" -o "+seg_png_file
 
-cmd = inkscape_path+cmd 
-inkscape_output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL,shell=True)      
-log(inkscape_output) 
+cmd = inkscape_path+cmd
+inkscape_output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL,shell=True)
+log(inkscape_output)
 
 
 #mix background and segment to get a preview
@@ -411,14 +417,14 @@ if (rom.drop_shadow ) and (not rom.flag_rendering_lcd_inverted):
     seg_shadow_file_fix =os.path.join(rom.build_dir,"segments_shadow_fix.svg")
     cmd = " "+ seg_shadow_file + " --query-all"+" --export-overwrite --export-type=svg" + " -o " + seg_shadow_file_fix
     cmd = inkscape_path + cmd
-    
+
     log(cmd)
-    
+
     inkscape_output=subprocess.check_output(cmd,stderr=subprocess.DEVNULL,shell=True)
     log(inkscape_output)
-    
+
     seg_shadow_file = seg_shadow_file_fix
- 
+
 ###################################################################################################
 ## parse all the objects in the svg file and keep only relevant ones
 ###################################################################################################
@@ -463,7 +469,7 @@ wr.close()
 wr = open(SGD_FILE_4BITS, 'w')
 wr.close()
 
-#Get all objects from svg file using Inkscape 
+#Get all objects from svg file using Inkscape
 #it's important to extract x,y coordinates from 'no shadow' segment file
 #because injecting drop shadow effect change original coordinates
 objects_all = subprocess.check_output([inkscape_path, "--query-all",seg_file],stderr=subprocess.DEVNULL)
@@ -559,7 +565,7 @@ for obj in objects_all.splitlines():
 #Change the svg source file if drop_shadow filter feature is enabled
 if (rom.drop_shadow ) and (not rom.flag_rendering_lcd_inverted):
   seg_file = seg_shadow_file
-  
+
 # if it's 'table top' or 'LCD reverse', the background shall be black and segments are white
 # otherwise, the background is white and the segments are black
 
@@ -573,7 +579,7 @@ if rom.flag_rendering_lcd_inverted:
   cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-overwrite --export-area-snap" + " --export-background=#000000"+" --export-type=png"
 else:
   cmd = " "+seg_file+" -i "+obj_to_extract+" -j" + " --export-overwrite --export-area-snap" + " --export-background=#FFFFFF"+" --export-type=png"
-  
+
 cmd= inkscape_path + cmd
 
 log(cmd)
@@ -595,7 +601,7 @@ for seg_pos in range(NB_SEGMENTS):
 
   PNG_FILE_PREFIX= os.path.splitext(os.path.basename(seg_file))[0]
   PNG_FILE = os.path.join(rom.build_dir,PNG_FILE_PREFIX +"_"+ tab_id[seg_pos]+".png")
-  
+
   png = Image.open(PNG_FILE).convert('RGBA')
   img_seg = Image.new("RGBA", png.size, (255, 255, 255))
   image = Image.alpha_composite(img_seg, png).convert('RGB')
@@ -606,12 +612,12 @@ for seg_pos in range(NB_SEGMENTS):
     #get white pixels boolean
     image_mask = np.array(image) != (255.,255.,255.)
     image_mask=image_mask[:,:,1]
-    
+
     width, height = image.size
     mask0,mask1=image_mask.any(0),image_mask.any(1)
     x0,x1=mask0.argmax(),width-mask0[::-1].argmax()
     y0,y1=mask1.argmax(),height-mask1[::-1].argmax()
- 
+
     # crop right and bottom borders
     bbox=(x0,y0,x1,y1)
     image = image.crop(bbox)
@@ -625,7 +631,7 @@ for seg_pos in range(NB_SEGMENTS):
 
   # check if we need to crop (error in Artwork or Bug in this rom builder)
   # format of .crop() is image = image.crop((left, top, right, bottom))
- 
+
   if x+width > gw_width:
     #crop right side by x+width - gw_width
     image = image.crop((0, 0, gw_width -x ,height))
@@ -781,24 +787,24 @@ with open(rom_filename, "wb") as out_file:
   ## ROM SIGNATURE   (8 bytes)
   out_file.write(rom_name.rjust(8)[-8:].encode("utf-8"))
   rom_offset+=8
-  
+
   ### Address counter time used by the program to manage it RTC (2 bytes)
   out_file.write(pack("B",rom.ADD_TIME_HOUR))
   out_file.write(pack("B",rom.ADD_TIME_SEC))
   rom_offset+=2
-  
+
   ### byte_spare1     	    (1 byte)
   out_file.write(pack("B", 0))
   rom_offset+=1
-  
+
   ### byte_spare2     	    (1 byte)
   out_file.write(pack("B", 0))
   rom_offset+=1
-  
+
   ### int_spare2     	    (4 bytes)
   out_file.write(pack("<l", 0))
   rom_offset+=4
-  
+
   ### ROM Flags         (4bytes)
   out_file.write(pack("<l", GW_FLAGS))
   rom_offset+=4
@@ -853,7 +859,7 @@ if not os.path.exists(payload_lz4):
 
 # fix windows issue due to ':' in file name
 final_rom_filename = final_rom_filename.replace(':','')
-  
+
 with open(final_rom_filename, "wb") as out_file:
 
   #Append LZ4 section

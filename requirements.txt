@@ -1,4 +1,6 @@
-svgutils
+Pillow
 lxml
 numpy
-Pillow
+patool
+pyunpack
+svgutils
