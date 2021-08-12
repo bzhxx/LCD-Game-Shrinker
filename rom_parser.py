@@ -247,6 +247,8 @@ def set_parameters(rom_name, mame_rom_dir):
 
         for f in files:
             fileName, fileExtension = os.path.splitext(f)
+            if fileName.startswith("."):
+                continue
 
     # maincpu
             if fileExtension in program_extension:
