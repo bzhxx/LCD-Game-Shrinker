@@ -33,6 +33,7 @@ import importlib
 import svgutils
 import zipfile
 import lz4.frame as lz4
+from pyunpack import Archive
 import numpy as np
 
 #ROM default defintion & parser
@@ -98,7 +99,7 @@ if os.path.isdir(rom_file) :
   ## get all files with .zip extension
   ## call this script for each file
   for x in os.listdir(rom_file) :
-    if x.endswith(".zip") :
+    if x.endswith(".zip") or x.endswith(".7z"):
       os.system(sys.executable +" "+ sys.argv[0] + ' ' + os.path.join(rom_path, str(x)))
   exit()
 
@@ -122,8 +123,13 @@ osmkdir(rom.mame_rom_dir)
 osmkdir(output_dir)
 
 #unzip original rom
-with zipfile.ZipFile(rom_file, 'r') as zip_ref:
-  zip_ref.extractall(rom.mame_rom_dir)
+if rom_file.endswith(".zip"):
+    with zipfile.ZipFile(rom_file, 'r') as zip_ref:
+        zip_ref.extractall(rom.mame_rom_dir)
+elif rom_file.endswith(".7z"):
+    Archive(rom_file).extractall(rom.mame_rom_dir)
+else:
+    raise ValueError(f"Unknown extension for rom {rom_file}")
 
 #unzip Artwork
 if os.path.isfile(artwork_file) :
