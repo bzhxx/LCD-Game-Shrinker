@@ -23,6 +23,7 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
 import sys, os, subprocess
+from pathlib import Path
 import re, lxml
 from struct import pack
 from PIL import Image,ImageChops
@@ -31,6 +32,7 @@ import importlib
 
 import svgutils
 import zipfile
+import lz4.frame as lz4
 from pyunpack import Archive
 import numpy as np
 
@@ -59,7 +61,6 @@ def error(s):
     exit()
 
 #try to locate tools
-lz4_path = os.environ["LZ4_PATH"] if "LZ4_PATH" in os.environ else "lz4"
 inkscape_path = os.environ["INKSCAPE_PATH"] if "INKSCAPE_PATH" in os.environ else "inkscape"
 
 # Print iterations progress
@@ -848,24 +849,20 @@ with open(rom_filename, "wb") as out_file:
           log("Write Padding")
 
 ## Compress ROM file using Stephane Collet LZ4
-payload_lz4 = os.path.join(rom.build_dir,str(rom_name)+"_payload.lz4")
-cmd =lz4_path+" -9f --content-size --no-frame-crc " + str(rom_filename) + " " + str(payload_lz4)
-
-lz4_output = subprocess.check_output(cmd,stderr=subprocess.STDOUT,shell=True)
-
-log(lz4_output)
-if not os.path.exists(payload_lz4):
-  error(lz4_output)
+compressed_rom = lz4.compress(
+                Path(rom_filename).read_bytes(),
+                compression_level=9,
+                block_size=lz4.BLOCKSIZE_MAX1MB,
+                block_linked=False,
+)
 
 # fix windows issue due to ':' in file name
 final_rom_filename = final_rom_filename.replace(':','')
 
 with open(final_rom_filename, "wb") as out_file:
-
   #Append LZ4 section
   log('\tAdd LZ4 payload')
-  with open(payload_lz4,"rb") as input_file:
-    out_file.write( input_file.read())
+  out_file.write(compressed_rom)
 
   #Append JPEG background (if it exists and flag_background_jpeg is set)
   if os.path.exists(jpeg_background) & (rom.flag_background_jpeg == True):

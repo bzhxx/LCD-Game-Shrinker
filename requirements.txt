@@ -1,5 +1,6 @@
 Pillow
 lxml
+lz4
 numpy
 patool
 pyunpack
