@@ -24,7 +24,6 @@ __author__ = "bzhxx"
 __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
-from re import I
 import rom_config as rom
 
 from custom.dual2single_screen import set_single_screen
