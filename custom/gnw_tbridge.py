@@ -20,10 +20,21 @@ FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 """
+
 __author__ = "bzhxx"
 __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 import rom_config as rom
+
+
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=20
+rom.ADD_TIME_HOUR_LSB=21
+rom.ADD_TIME_MIN_MSB=22
+rom.ADD_TIME_MIN_LSB=23
+rom.ADD_TIME_SEC_MSB=24
+rom.ADD_TIME_SEC_LSB=25
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
 
 rom.background_file = "BackgroundNS.png"
 

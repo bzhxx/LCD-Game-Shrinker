@@ -25,6 +25,15 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 import rom_config as rom
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=54
+rom.ADD_TIME_HOUR_LSB=55
+rom.ADD_TIME_MIN_MSB=56
+rom.ADD_TIME_MIN_LSB=57
+rom.ADD_TIME_SEC_MSB=58
+rom.ADD_TIME_SEC_LSB=59
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+
 K1 = rom.BTN_RIGHT + rom.BTN_DOWN
 K2 = rom.BTN_RIGHT + rom.BTN_UP
 K3 = rom.BTN_LEFT + rom.BTN_DOWN

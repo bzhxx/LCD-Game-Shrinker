@@ -119,15 +119,11 @@ def log(s):
 
 
 def warm(s):
-    print(rom.mame_fullname + " WARNING:"+s + ' ['+str(rom_name) + ']')
+    print(rom.mame_fullname + " WARNING:"+s + ' ['+str(rom.name) + ']')
 
 
 def error(s):
-    print(rom.mame_fullname + " ERROR:"+s + ' [' + str(rom_name) + ']')
-    try:
-        inkscape.close()
-    except:
-        pass
+    print(rom.mame_fullname + " ERROR:"+s + ' [' + str(rom.name) + ']')
     exit()
 
 # def set_parameters(rom_name,mame_rom_dir, mame_driver_file):
@@ -268,18 +264,22 @@ def set_parameters(rom_name, mame_rom_dir):
                 if f.find("_top.svg") > -1:
                     rom.segments_top_file = os.path.basename(f)
                     rom.dual_screen_vert = True
+                    rom.keep_aspect_ratio = False
 
                 if f.find("_bottom.svg") > -1:
                     rom.segments_bottom_file = os.path.basename(f)
                     rom.dual_screen_vert = True
+                    rom.keep_aspect_ratio = False
 
                 if f.find("_left.svg") > -1:
                     rom.segments_left_file = os.path.basename(f)
                     rom.dual_screen_hor = True
+                    rom.keep_aspect_ratio = False
 
                 if f.find("_right.svg") > -1:
                     rom.segments_right_file = os.path.basename(f)
                     rom.dual_screen_hor = True
+                    rom.keep_aspect_ratio = False
 
         # single screens
         rom.segments_file = rom.name+".svg"
@@ -544,7 +544,7 @@ def set_parameters(rom_name, mame_rom_dir):
         import importlib
         module_name = "custom."+rom_name
         if not (module_name in sys.modules):
-            custom_mod = importlib.import_module(module_name)
+            importlib.import_module(module_name)
         else:
             importlib.reload(sys.modules[module_name])
 

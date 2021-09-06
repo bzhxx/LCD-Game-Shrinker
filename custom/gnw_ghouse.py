@@ -29,7 +29,54 @@ from custom.rotate_screen import rotate_screen
 from custom.dual2single_screen import set_single_screen
 
 #Enable the following line to rotate the screen rendering
-#rom.rotate = True
+rom.rotate = True
+
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=20
+rom.ADD_TIME_HOUR_LSB=21
+rom.ADD_TIME_MIN_MSB=22
+rom.ADD_TIME_MIN_LSB=23
+rom.ADD_TIME_SEC_MSB=24
+rom.ADD_TIME_SEC_LSB=25
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+
+# In LCD-Game-Emulator,
+# A specific custom keyboard is implemented for "Green House" when screen is rotated.
+# It permits to play in rotate view with DPAD only.
+# According to the character postion, the Button A is emulated over DPAD keys press.
+#                 ~ ~   ~ ~
+#                 A B C D E
+#                 ~   F   ~
+#                  ~  G  ~ 
+#                   H I J
+#
+#In positions :
+# A, H : LEFT or UP emulates Button A
+# B, D : UP emulates Button A
+# E, J : RIGHT or UP emulates Button A
+# C,F,G,I :ignore
+#
+#SM51X series: output to x.y.z, where:
+	# x = group a/b/bs/c (0/1/2/3)
+	# y = segment 1-16 (0-15)
+	# z = common H1-H4 (0-3)
+
+#    CPU RAM display 
+#	0X50.. 0X5F : c1..c16 (base=80)
+#	0X60.. 0X6F : a1..a16 (base=96)
+#	0X70.. 0X7F : b1..b16 (base=112)
+
+# Position: segment      : RAM   MASk
+#        A  h1b7  1.6.0    118   0x1
+#        B  h1b12 1.11.0   123   0x1
+#        C  h1a13 0.12.0   108   0x1
+#        D  h1b13 1.12.0   124   0x1
+#        E  h1a15 0.14.0   110   0x1
+#        F  h3b3  1.2.2    114   0x4
+#        G  h2b3  1.2.1    114   0x2
+#        H  h1a4  0.3.0     99   0x1
+#        I  h1b3  1.2.0    114   0x1
+#        J  h1a3  0.2.0     98   0x1
 
 if rom.rotate :
 
@@ -41,7 +88,7 @@ if rom.rotate :
     K1 = 0
     K2 = 0
     K3 = 0
-    K4 = rom.BTN_A + rom.BTN_B
+    K4 = rom.BTN_A
     rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
     # Input S2

@@ -27,6 +27,15 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=35
+rom.ADD_TIME_HOUR_LSB=36
+rom.ADD_TIME_MIN_MSB=37
+rom.ADD_TIME_MIN_LSB=38
+rom.ADD_TIME_SEC_MSB=33
+rom.ADD_TIME_SEC_LSB=34
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+
 K1 = 0
 K2 = rom.BTN_GAME
 K3 = 0

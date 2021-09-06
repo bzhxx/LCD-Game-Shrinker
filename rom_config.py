@@ -116,15 +116,24 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 #S1(+R1) to piezo FLAG_SOUND_S1R1_PIEZO
 
 """
+
+## Set the 2 following seeting to True to get smaller rom files
+# select if the background is JPEG compressed (lossly) or compressed within ROM data as RGB565
+flag_background_jpeg = False
+
+# select if the ROM data are compressed with ZLIB (True) or LZ4 (False)
+COMPRESS_WITH_ZLIB = False
+
 # WARNING : this file is used to share the ROM parameters along the building processs
 # if you want to customize some of parameters for a specific ROM, it's better to create
-# a script in in the custom directory
+# or to modify the corresponding script in the custom directory
 #######################################################################################
 
+# Enable to keep aspect ratio, otherwise the display is full screen
+keep_aspect_ratio = False
+
+# Enable to rotate display by 90° clock wise
 rotate = False
-# select if the background is JPEG compressed (lossly) or LZ4 (uncompressed)
-flag_background_jpeg = False
-#flag_background_jpeg = True
 
 # For JPEG compressed
 jpeg_quality = 90
@@ -217,7 +226,7 @@ screen_height = 0
 flag_rendering_lcd_inverted = False
 
 # Enable drop shadow rendering effect
-drop_shadow = True
+drop_shadow = False
 
 # Buttons mapping
 # up to 8 columns outputs to address 4 inputs (K1..K4)
@@ -230,8 +239,13 @@ BTN_DATA = [0]*BTN_SIZE
 
 # RAM address of the time count
 # used to get consistent time emulation
-ADD_TIME_HOUR = 0
-ADD_TIME_SEC = 0
+ADD_TIME_HOUR_MSB=0
+ADD_TIME_HOUR_LSB=0
+ADD_TIME_MIN_MSB=0
+ADD_TIME_MIN_LSB=0
+ADD_TIME_SEC_MSB=0
+ADD_TIME_SEC_LSB=0
+ADD_TIME_HOUR_MSB_PM_VALUE=0
 
 
 ###################################################

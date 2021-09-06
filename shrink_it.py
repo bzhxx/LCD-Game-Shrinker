@@ -32,6 +32,7 @@ import importlib
 
 import svgutils
 import zipfile
+import zlib
 import lz4.frame as lz4
 from pyunpack import Archive
 import numpy as np
@@ -155,6 +156,14 @@ if os.path.isfile(parent_file) :
 
   rom_parser.set_parameters(rom_name, rom.mame_rom_dir)
 
+parent_file=rom_path+'/'+rom.mame_parent.strip()+'.7z'
+if os.path.isfile(parent_file) :
+  log('parent found:'+parent_file)
+
+  Archive(parent_file).extractall(rom.mame_rom_dir)
+
+  rom_parser.set_parameters(rom_name, rom.mame_rom_dir)
+
 if rom.mame_fullname == "'unknown game'":
   error("There is no entry for this game")
 
@@ -227,11 +236,37 @@ if os.path.isfile(background_file) :
   MAME_composite = alpha_composite.resize((rom.background_width,rom.background_height),Image.LANCZOS)
   MAME_composite.save(MAME_back_file)
 
-  # resize to target
-  alpha_composite = alpha_composite.resize((gw_width,gw_height),Image.LANCZOS)
+  # resize to target keeping aspect ratio or full screen
 
-  # Create background data section in RGB
-  alpha_composite.save(back_file)
+  if rom.keep_aspect_ratio:
+    scale_x = float(gw_width) / float(rom.background_width)
+    scale_y = float(gw_height) / float(rom.background_height)
+
+    # select the factor and position x,y
+    if scale_x < scale_y:
+      bgnd_width = gw_width
+      bgnd_height= int(scale_x * float(rom.background_height))
+      mov_x = 0
+      mov_y = int((gw_height - bgnd_height)/2)
+
+    else:
+      bgnd_width = int(scale_y * float(rom.background_width))
+      bgnd_height= gw_height
+
+      mov_y = 0
+      mov_x = int((gw_width - bgnd_width)/2)
+
+    alpha_composite = alpha_composite.resize((bgnd_width,bgnd_height),Image.LANCZOS)
+
+    tmp_new_background = Image.new(mode="RGB", size=(gw_width, gw_height),color=(0,0,0))
+    tmp_new_background.paste(alpha_composite, (mov_x, mov_y))
+
+    tmp_new_background.save(back_file)
+    alpha_composite = Image.open(back_file).convert('RGB')
+
+  else:
+    alpha_composite = alpha_composite.resize((gw_width,gw_height),Image.LANCZOS)
+    alpha_composite.save(back_file)
 
   # Create background data section in 16bits reduced space color
   pixels = list(alpha_composite.getdata())
@@ -257,7 +292,7 @@ if os.path.isfile(background_file) :
       f.write(pack('H', (r << 11) + (g << 5) + b))
 
   # Create background data section in JPEG
-  alpha_composite.save(jpeg_background, optimize=True,quality=rom.jpeg_quality )
+  alpha_composite.resize((gw_width,gw_height),Image.LANCZOS).save(jpeg_background, optimize=True,quality=rom.jpeg_quality )
 
 else:
   # warm user
@@ -305,7 +340,6 @@ MAME_figure.save(MAME_seg_file)
 ### Adapt segments file to target
 printProgressBar(2, 3, prefix = bar_prefix, suffix = 'Shrink segments', length = 20)
 svg = svgutils.transform.fromfile(MAME_seg_file)
-originalSVG = svgutils.compose.SVG(MAME_seg_file)
 tree = lxml.etree.parse(MAME_seg_file, parser=lxml.etree.XMLParser(huge_tree=True))
 
 svg_root = tree.getroot()
@@ -314,7 +348,29 @@ viewbox = re.split('[ ,\t]+', svg_root.get('viewBox', '').strip())
 viewbox_width = float(viewbox[2])
 viewbox_height = float(viewbox[3])
 
-originalSVG.scale(gw_width/viewbox_width,gw_height/viewbox_height)
+# keep aspect ratio or full screen
+originalSVG = svgutils.compose.SVG(MAME_seg_file)
+
+if rom.keep_aspect_ratio:
+  scale_x = float(gw_width) / viewbox_width
+  scale_y = float(gw_height) / viewbox_height
+
+  # select the factor and postion x,y
+  if scale_x < scale_y:
+    scale = scale_x
+    mov_x = 0
+    mov_y = (gw_height - (scale * viewbox_height))/2
+
+  else:
+    scale = scale_y
+    mov_x = (gw_width - (scale * viewbox_width))/2
+    mov_y = 0
+
+  # reshape the figure
+  originalSVG.scale(scale, scale).move(mov_x, mov_y)
+
+else:
+  originalSVG.scale(gw_width/viewbox_width,gw_height/viewbox_height)
 
 figure = svgutils.compose.Figure(gw_width,gw_height, originalSVG)
 figure.save(seg_file)
@@ -789,22 +845,20 @@ with open(rom_filename, "wb") as out_file:
   out_file.write(rom_name.rjust(8)[-8:].encode("utf-8"))
   rom_offset+=8
 
-  ### Address counter time used by the program to manage it RTC (2 bytes)
-  out_file.write(pack("B",rom.ADD_TIME_HOUR))
-  out_file.write(pack("B",rom.ADD_TIME_SEC))
-  rom_offset+=2
+  ### Address counter time used by the program to manage it RTC (6 bytes)
+  out_file.write(pack("B",rom.ADD_TIME_HOUR_MSB))
+  out_file.write(pack("B",rom.ADD_TIME_HOUR_LSB))
+  out_file.write(pack("B",rom.ADD_TIME_MIN_MSB))
+  out_file.write(pack("B",rom.ADD_TIME_MIN_LSB))
+  out_file.write(pack("B",rom.ADD_TIME_SEC_MSB))
+  out_file.write(pack("B",rom.ADD_TIME_SEC_LSB))
+  out_file.write(pack("B",rom.ADD_TIME_HOUR_MSB_PM_VALUE))
+
+  rom_offset+=7
 
   ### byte_spare1     	    (1 byte)
   out_file.write(pack("B", 0))
   rom_offset+=1
-
-  ### byte_spare2     	    (1 byte)
-  out_file.write(pack("B", 0))
-  rom_offset+=1
-
-  ### int_spare2     	    (4 bytes)
-  out_file.write(pack("<l", 0))
-  rom_offset+=4
 
   ### ROM Flags         (4bytes)
   out_file.write(pack("<l", GW_FLAGS))
@@ -848,20 +902,35 @@ with open(rom_filename, "wb") as out_file:
           rd_modulo=rd_modulo+1
           log("Write Padding")
 
-## Compress ROM file using Stephane Collet LZ4
-compressed_rom = lz4.compress(
+
+if rom.COMPRESS_WITH_ZLIB:
+  ## Compress ROM file using zlib 
+
+  c = zlib.compressobj(level=9, method=zlib.DEFLATED, wbits=-15, memLevel=9)
+  compressed_rom = c.compress(Path(rom_filename).read_bytes()) + c.flush()
+
+  ## Compress ROM file using zopfli
+  #import zopfli
+  #c = zopfli.ZopfliCompressor(zopfli.ZOPFLI_FORMAT_DEFLATE)
+  #compressed_rom = c.compress(Path(rom_filename).read_bytes()) + c.flush()
+
+else:
+  ## Compress ROM using LZ4
+  compressed_rom = lz4.compress(
                 Path(rom_filename).read_bytes(),
                 compression_level=9,
                 block_size=lz4.BLOCKSIZE_MAX1MB,
-                block_linked=False,
-)
+                block_linked=False,)
 
 # fix windows issue due to ':' in file name
 final_rom_filename = final_rom_filename.replace(':','')
 
 with open(final_rom_filename, "wb") as out_file:
-  #Append LZ4 section
-  log('\tAdd LZ4 payload')
+  
+  if rom.COMPRESS_WITH_ZLIB:
+    out_file.write( b'ZLIB')
+    out_file.write(pack("<l",len(compressed_rom)))
+
   out_file.write(compressed_rom)
 
   #Append JPEG background (if it exists and flag_background_jpeg is set)

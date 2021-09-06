@@ -27,9 +27,18 @@ __license__ = "GPLv3"
 import rom_config as rom
 from custom.dual2single_screen import set_single_screen
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=10
+rom.ADD_TIME_HOUR_LSB=11
+rom.ADD_TIME_MIN_MSB=12
+rom.ADD_TIME_MIN_LSB=13
+rom.ADD_TIME_SEC_MSB=14
+rom.ADD_TIME_SEC_LSB=15
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+
 #define width and height borders to keep an acceptable ratio
 rom.width_border_ratio = 0
-rom.height_border_ratio = 10/100
+rom.height_border_ratio = 20/100
 
 #Input S1
 K1=rom.BTN_LEFT

@@ -68,6 +68,9 @@ def get_dual_screen_view():
     layout_root = tree.getroot()
     rom.layout_found = False
 
+    #disable keep aspect ratio
+    rom.keep_aspect_ratio = False
+
     # First tentative look for 'background' & 'only' in the name view
     for x in layout_root:
         if str(x.tag) == 'view':
@@ -132,7 +135,6 @@ def get_dual_screen_view():
 
 #  The follow code is generic for horizontal or vertical dual screen
 #  It permits to stick backgrounds and segments according to MAME layout
-
 
 def set_single_screen():
 

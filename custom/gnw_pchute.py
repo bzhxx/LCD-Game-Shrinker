@@ -27,10 +27,19 @@ __license__ = "GPLv3"
 import rom_config as rom
 
 # Force to use Background with drop shadow
-rom.background_file = "Background.png"
+#rom.background_file = "Background.png"
 
 # Enable experimental drop shadow effect on LCD segments
-rom.drop_shadow = True
+#rom.drop_shadow = True
+
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=54
+rom.ADD_TIME_HOUR_LSB=55
+rom.ADD_TIME_MIN_MSB=56
+rom.ADD_TIME_MIN_LSB=57
+rom.ADD_TIME_SEC_MSB=58
+rom.ADD_TIME_SEC_LSB=59
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
 
 # Input R(4)
 K1 = 0

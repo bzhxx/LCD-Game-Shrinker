@@ -29,8 +29,17 @@ import rom_config as rom
 from custom.rotate_screen import rotate_screen
 from custom.dual2single_screen import set_single_screen
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=68
+rom.ADD_TIME_HOUR_LSB=67
+rom.ADD_TIME_MIN_MSB=66
+rom.ADD_TIME_MIN_LSB=65
+rom.ADD_TIME_SEC_MSB=70
+rom.ADD_TIME_SEC_LSB=69
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 2
+
 #Enable the following line to rotate the screen rendering
-#rom.rotate = True
+rom.rotate = True
 
 if rom.rotate:
     # define width and height borders to keep an acceptable ratio
@@ -50,7 +59,7 @@ if rom.rotate:
     K1 = 0
     K2 = 0
     K3 = 0
-    K4 = rom.BTN_A
+    K4 = rom.BTN_A + rom.BTN_RIGHT
     rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
     # Input S2

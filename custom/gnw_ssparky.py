@@ -26,6 +26,17 @@ __license__ = "GPLv3"
 from custom.rotate_screen import rotate_screen
 import rom_config as rom
 
+rom.keep_aspect_ratio = True
+
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=10
+rom.ADD_TIME_HOUR_LSB=11
+rom.ADD_TIME_MIN_MSB=12
+rom.ADD_TIME_MIN_LSB=13
+rom.ADD_TIME_SEC_MSB=14
+rom.ADD_TIME_SEC_LSB=15
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+
 # Force to use Background with drop shadow
 # rom.background_file="Background.png"
 

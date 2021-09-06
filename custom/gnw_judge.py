@@ -26,10 +26,24 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
-K1 = rom.BTN_RIGHT + rom.BTN_DOWN
-K2 = rom.BTN_RIGHT + rom.BTN_UP
-K3 = rom.BTN_LEFT + rom.BTN_DOWN
-K4 = rom.BTN_LEFT + rom.BTN_UP
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=18
+rom.ADD_TIME_HOUR_LSB=19
+rom.ADD_TIME_MIN_MSB=22
+rom.ADD_TIME_MIN_LSB=23
+rom.ADD_TIME_SEC_MSB=20
+rom.ADD_TIME_SEC_LSB=21
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 0
+
+K1 = rom.BTN_B # Right-Side Down
+K2 = rom.BTN_A # Right-Side UP
+K3 = rom.BTN_DOWN # Left-Side Down
+K4 = rom.BTN_UP # Left-Side Up
+
+#K1 = rom.BTN_RIGHT + rom.BTN_DOWN
+#K2 = rom.BTN_RIGHT + rom.BTN_UP
+#K3 = rom.BTN_LEFT + rom.BTN_DOWN
+#K4 = rom.BTN_LEFT + rom.BTN_UP
 rom.BTN_DATA[rom.R3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 K1 = 0

@@ -29,13 +29,22 @@ from PIL import Image
 
 import rom_config as rom
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=64
+rom.ADD_TIME_HOUR_LSB=65
+rom.ADD_TIME_MIN_MSB=66
+rom.ADD_TIME_MIN_LSB=67
+rom.ADD_TIME_SEC_MSB=68
+rom.ADD_TIME_SEC_LSB=69
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 0
+
 # gradient style
 #Mix: background_file + 'bubbles.png' + 'background.png'
 main_background_file = 'Background.png'
 bubbles_file = 'Bubbles.png'
 
 # experimental drop shadow effect on LCD segments
-rom.drop_shadow = True
+#rom.drop_shadow = True
 
 score_board = Image.open(os.path.join(rom.mame_rom_dir, rom.background_file))
 main_background = Image.open(os.path.join(
@@ -49,7 +58,7 @@ img_background = Image.new("RGBA", score_board.size)
 # add main background grey
 img_background = Image.alpha_composite(img_background, main_background)
 
-# vermin lines and scrore board
+# vermin lines and score board
 img_background = Image.alpha_composite(img_background, score_board)
 
 # add bubbles

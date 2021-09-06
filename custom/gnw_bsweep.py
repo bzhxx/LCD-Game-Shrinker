@@ -26,6 +26,15 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=17
+rom.ADD_TIME_HOUR_LSB=18
+rom.ADD_TIME_MIN_MSB=19
+rom.ADD_TIME_MIN_LSB=20
+rom.ADD_TIME_SEC_MSB=21
+rom.ADD_TIME_SEC_LSB=22
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 2
+
 from custom.rotate_screen import rotate_screen
 from custom.dual2single_screen import set_single_screen
 

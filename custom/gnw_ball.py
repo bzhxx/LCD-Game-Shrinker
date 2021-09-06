@@ -29,6 +29,15 @@ from PIL import Image
 
 import rom_config as rom
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=72
+rom.ADD_TIME_HOUR_LSB=73
+rom.ADD_TIME_MIN_MSB=74
+rom.ADD_TIME_MIN_LSB=75
+rom.ADD_TIME_SEC_MSB=76
+rom.ADD_TIME_SEC_LSB=77
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 0
+
 # Example how we can change the rendering using python
 
 #Mix: background_file + 'bubbles.png' + 'background.png'
@@ -38,7 +47,7 @@ bubbles_file = 'Bubbles.png'
 gradient_file = "Gradient.png"
 
 # experimental drop shadow effect on LCD segments
-rom.drop_shadow = True
+#rom.drop_shadow = True
 background_file_path = os.path.join(rom.mame_rom_dir, background_file)
 if os.path.isfile(background_file_path):
 
@@ -65,7 +74,7 @@ if os.path.isfile(background_file_path):
     img_background = Image.alpha_composite(img_background, bubbles)
 
     # add gradient
-    img_background = Image.alpha_composite(img_background, gradient)
+  #  img_background = Image.alpha_composite(img_background, gradient)
 
     # remove ALPHA channel
     img_background = img_background.convert('RGB')

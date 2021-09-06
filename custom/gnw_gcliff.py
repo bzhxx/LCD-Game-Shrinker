@@ -29,8 +29,17 @@ import rom_config as rom
 from custom.dual2single_screen import set_single_screen
 from custom.rotate_screen import rotate_screen
 
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=16
+rom.ADD_TIME_HOUR_LSB=17
+rom.ADD_TIME_MIN_MSB=18
+rom.ADD_TIME_MIN_LSB=19
+rom.ADD_TIME_SEC_MSB=20
+rom.ADD_TIME_SEC_LSB=21
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 2
+
 #Enable the following line to rotate the screen rendering
-#rom.rotate = True
+rom.rotate = True
 
 if rom.rotate:
     # define width and height borders to keep an acceptable ratio
@@ -54,6 +63,13 @@ if rom.rotate:
     K4 = rom.BTN_LEFT
     rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
+    # Input S2
+    K1 = rom.BTN_A + rom.BTN_RIGHT
+    K2 = 0
+    K3 = 0
+    K4 = 0
+    rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
 else:
 
     # define width and height borders to keep an acceptable ratio
@@ -67,14 +83,14 @@ else:
     K4 = rom.BTN_DOWN
     rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Input S2
-K1 = rom.BTN_A
-K2 = 0
-K3 = 0
-K4 = 0
-rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+    # Input S2
+    K1 = rom.BTN_A
+    K2 = 0
+    K3 = 0
+    K4 = 0
+    rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-# Input S2
+# Input S3
 K1 = 0
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME

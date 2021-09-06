@@ -26,6 +26,17 @@ __license__ = "GPLv3"
 
 import rom_config as rom
 
+rom.keep_aspect_ratio = True
+
+# Patch address to synchronize TIME with RTC host
+rom.ADD_TIME_HOUR_MSB=20
+rom.ADD_TIME_HOUR_LSB=21
+rom.ADD_TIME_MIN_MSB=22
+rom.ADD_TIME_MIN_LSB=23
+rom.ADD_TIME_SEC_MSB=24
+rom.ADD_TIME_SEC_LSB=25
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+
 #This section describes how to map the keys
 
 """
