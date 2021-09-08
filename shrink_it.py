@@ -112,11 +112,13 @@ artwork_file=os.path.join(artwork_path,rom_name+".zip")
 # Create directories to build things
 built_root = os.path.join('.',"build")
 preview_root = os.path.join('.',"preview")
+title_image_root = os.path.join('.',"title")
 rom.build_dir =os.path.join(built_root,rom_name)
 rom.mame_rom_dir = os.path.join(rom.build_dir ,"original")
 
 osmkdir(built_root)
 osmkdir(preview_root)
+osmkdir(title_image_root)
 osmkdir(rom.build_dir)
 osmkdir(rom.mame_rom_dir)
 
@@ -427,6 +429,7 @@ else:
   seg_preview_file = seg_file
 
 preview_file = os.path.join(preview_root,rom.mame_fullname.replace(":","")+".png")
+title_image_file = os.path.join(title_image_root,rom.mame_fullname.replace(":","")+".png")
 seg_png_file = os.path.join(rom.build_dir,rom.name+".png")
 
 if rom.flag_rendering_lcd_inverted:
@@ -444,6 +447,8 @@ background_preview = Image.open(back_file).convert('RGB')
 segment_preview = Image.open(seg_png_file).convert('RGB').resize((background_preview.size))
 preview = Image.new("RGB", (background_preview.size))
 preview  = ImageChops.multiply(background_preview, segment_preview)
+# copy the generated preview to make just the title image
+title_image = preview.copy().resize((128,96))
 
 unit= Image.open("./custom/unit_x206y99.png").convert('RGB')
 unit.paste(preview,(206,99))
@@ -454,6 +459,9 @@ unit.save(preview_file)
 if rom.rotate:
     unit = Image.open(preview_file).rotate(90, expand=True)
     unit.save(preview_file)
+
+# save title image
+title_image.save(title_image_file)
 
 ###################################################################################################
 ### open/save svg file using Inkscape (workaround to fix modification applied on path name by Inkscape)
