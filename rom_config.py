@@ -117,13 +117,6 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 
 """
 
-## Set the 2 following seeting to True to get smaller rom files
-# select if the background is JPEG compressed (lossly) or compressed within ROM data as RGB565
-flag_background_jpeg = False
-
-# select if the ROM data are compressed with ZLIB (True) or LZ4 (False)
-COMPRESS_WITH_ZLIB = False
-
 # WARNING : this file is used to share the ROM parameters along the building processs
 # if you want to customize some of parameters for a specific ROM, it's better to create
 # or to modify the corresponding script in the custom directory
@@ -135,10 +128,7 @@ keep_aspect_ratio = False
 # Enable to rotate display by 90° clock wise
 rotate = False
 
-# For JPEG compressed
-jpeg_quality = 90
-
-# If uncompressed you can reduce the background resolution
+# you can reduce the background resolution
 # 1 no reduction RGB565
 # 2 (-1 bit) resolution RGB454
 # 4 (-2 bit) resolution RGB343

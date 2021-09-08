@@ -46,6 +46,23 @@ output_dir   ="./output/"
 
 DEBUG = False
 
+
+# select if the ROM data are compressed with ZLIB, LZ4 or LZMA
+LZ4_COMPRESSOR =1
+ZLIB_COMPRESSOR=2
+LZMA_COMPRESSOR=3
+
+COMPRESS_WITH = LZ4_COMPRESSOR
+#COMPRESS_WITH = LZMA_COMPRESSOR
+
+## Set the 2 following seeting to True to get smaller rom files
+# select if the background is JPEG compressed (lossly) or compressed within ROM data as RGB565
+flag_background_jpeg = False
+#lag_background_jpeg = True
+
+# For JPEG compressed
+jpeg_quality = 90
+
 #G&W LCD resolution
 gw_width=320
 gw_height=240
@@ -294,7 +311,7 @@ if os.path.isfile(background_file) :
       f.write(pack('H', (r << 11) + (g << 5) + b))
 
   # Create background data section in JPEG
-  alpha_composite.resize((gw_width,gw_height),Image.LANCZOS).save(jpeg_background, optimize=True,quality=rom.jpeg_quality )
+  alpha_composite.resize((gw_width,gw_height),Image.LANCZOS).save(jpeg_background, optimize=True,quality=jpeg_quality )
 
 else:
   # warm user
@@ -830,7 +847,7 @@ if rom.flag_segments_4bits :
 # If the background is compressed, remove it from the payload
 # The jpeg background is added right after the LZ4 payload
 
-if rom.flag_background_jpeg :
+if flag_background_jpeg :
   GW_FLAGS|=0x20
   BGD_FILE="xxx-xxx-x.empty"
 
@@ -911,7 +928,7 @@ with open(rom_filename, "wb") as out_file:
           log("Write Padding")
 
 
-if rom.COMPRESS_WITH_ZLIB:
+if COMPRESS_WITH == ZLIB_COMPRESSOR:
   ## Compress ROM file using zlib 
 
   c = zlib.compressobj(level=9, method=zlib.DEFLATED, wbits=-15, memLevel=9)
@@ -922,7 +939,7 @@ if rom.COMPRESS_WITH_ZLIB:
   #c = zopfli.ZopfliCompressor(zopfli.ZOPFLI_FORMAT_DEFLATE)
   #compressed_rom = c.compress(Path(rom_filename).read_bytes()) + c.flush()
 
-else:
+elif COMPRESS_WITH == LZ4_COMPRESSOR:
   ## Compress ROM using LZ4
   compressed_rom = lz4.compress(
                 Path(rom_filename).read_bytes(),
@@ -930,19 +947,38 @@ else:
                 block_size=lz4.BLOCKSIZE_MAX1MB,
                 block_linked=False,)
 
+elif COMPRESS_WITH == LZMA_COMPRESSOR:
+  ## Compress ROM using LZMA
+  import lzma
+
+  compressed_rom = lzma.compress(
+        Path(rom_filename).read_bytes(),
+        format=lzma.FORMAT_ALONE,
+        filters=[
+            {
+                "id": lzma.FILTER_LZMA1,
+                "preset": 6,
+                "dict_size": 16 * 1024,
+            }
+        ])
+  compressed_rom = compressed_rom[13:]
+
 # fix windows issue due to ':' in file name
 final_rom_filename = final_rom_filename.replace(':','')
 
 with open(final_rom_filename, "wb") as out_file:
   
-  if rom.COMPRESS_WITH_ZLIB:
+  if COMPRESS_WITH == ZLIB_COMPRESSOR:
     out_file.write( b'ZLIB')
     out_file.write(pack("<l",len(compressed_rom)))
 
+  if COMPRESS_WITH == LZMA_COMPRESSOR:
+    out_file.write( b'LZMA')
+    out_file.write(pack("<l",len(compressed_rom)))
   out_file.write(compressed_rom)
 
   #Append JPEG background (if it exists and flag_background_jpeg is set)
-  if os.path.exists(jpeg_background) & (rom.flag_background_jpeg == True):
+  if os.path.exists(jpeg_background) & (flag_background_jpeg == True):
     log('\tAdd JPEG background')
     with open(jpeg_background,"rb") as input_file:
       out_file.write( input_file.read())
