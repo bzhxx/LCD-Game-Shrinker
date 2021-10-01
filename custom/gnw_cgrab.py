@@ -29,6 +29,7 @@ from custom.rotate_screen import rotate_screen
 import rom_config as rom
 
 rom.keep_aspect_ratio = True
+rom.crop_jpeg_background_border = True
 
 # Patch address to synchronize TIME with RTC host
 rom.ADD_TIME_HOUR_MSB=20

@@ -122,6 +122,41 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 # or to modify the corresponding script in the custom directory
 #######################################################################################
 
+### You can reduce the ROM size by changing the following parameters:
+## flag_segments_resolution_bits
+## flag_background_jpeg
+## jpeg_quality
+
+## To get the highest resolution 
+'''
+flag_segments_resolution_bits = 4
+flag_background_jpeg = False
+'''
+
+## To get the lowest ROM file size 
+'''
+flag_segments_resolution_bits = 2
+flag_background_jpeg = True
+jpeg_quality = 75
+'''
+
+## To reduce ROM file size (medium configuration) 
+'''
+flag_segments_resolution_bits = 4
+flag_background_jpeg = True
+jpeg_quality = 90
+'''
+
+# Customized segments resolution is 8bits(8), 4bits(4) or 2bits(2)
+flag_segments_resolution_bits = 4 
+
+## Set the 2 following seeting to True to get smaller rom files
+# select if the background is JPEG compressed (lossly) or compressed within ROM data as RGB565
+flag_background_jpeg = False
+
+# For JPEG compressed
+jpeg_quality = 90
+
 # Enable to keep aspect ratio, otherwise the display is full screen
 keep_aspect_ratio = False
 
@@ -139,10 +174,6 @@ RGB343 = 4
 RGB232 = 8
 
 background_resolution = RGB565
-
-# Customized segments resolution is 8bits (False) or 4bits (True)
-flag_segments_4bits = True
-#flag_segments_4bits = False
 
 # Defined the LCD deflicker level
 # 0 : filter is disabled
@@ -217,6 +248,9 @@ flag_rendering_lcd_inverted = False
 
 # Enable drop shadow rendering effect
 drop_shadow = False
+
+# Crop the black border of jpeg background to reduce a little bit the jpeg file size
+crop_jpeg_background_border = True
 
 # Buttons mapping
 # up to 8 columns outputs to address 4 inputs (K1..K4)

@@ -55,14 +55,6 @@ LZMA_COMPRESSOR=3
 COMPRESS_WITH = LZ4_COMPRESSOR
 #COMPRESS_WITH = LZMA_COMPRESSOR
 
-## Set the 2 following seeting to True to get smaller rom files
-# select if the background is JPEG compressed (lossly) or compressed within ROM data as RGB565
-flag_background_jpeg = False
-#lag_background_jpeg = True
-
-# For JPEG compressed
-jpeg_quality = 90
-
 #G&W LCD resolution
 gw_width=320
 gw_height=240
@@ -208,7 +200,6 @@ back_file = os.path.join(rom.build_dir,"background.png")
 MAME_back_file = os.path.join(rom.build_dir,"MAME_background.png")
 
 jpeg_background = os.path.join(rom.build_dir,"gnw_background.jpg")
-
 # intermediate ROM file (raw / uncompressed)
 # without JPEG background
 # with or without 565 16bits background
@@ -222,6 +213,7 @@ final_rom_filename = os.path.join(output_dir,str(rom.mame_fullname+".gw"))
 BGD_FILE = os.path.join(rom.build_dir,"gnw_background")
 SGD_FILE = os.path.join(rom.build_dir,"gnw_segments")
 SGD_FILE_4BITS = os.path.join(rom.build_dir, "gnw_segments_4bits")
+SGD_FILE_2BITS = os.path.join(rom.build_dir, "gnw_segments_2bits")
 SGO_FILE = os.path.join(rom.build_dir,"gnw_segments_offset")
 SGX_FILE = os.path.join(rom.build_dir,"gnw_segments_x")
 SGY_FILE = os.path.join(rom.build_dir,"gnw_segments_y")
@@ -232,6 +224,8 @@ PGM_FILE= program_file
 BTN_FILE = os.path.join(rom.build_dir,"gnw_buttons")
 
 ### Adapt Artwork background to target
+######################################################################################
+
 bar_prefix=(rom.mame_fullname).split(": ",1)[-1].split(" (",1)[0]
 
 if rom.custom_script_notfound :
@@ -277,7 +271,11 @@ if os.path.isfile(background_file) :
 
     alpha_composite = alpha_composite.resize((bgnd_width,bgnd_height),Image.LANCZOS)
 
+    img_jpeg_background=alpha_composite.copy()
+
+    # Create background data section in RGB565
     tmp_new_background = Image.new(mode="RGB", size=(gw_width, gw_height),color=(0,0,0))
+    
     tmp_new_background.paste(alpha_composite, (mov_x, mov_y))
 
     tmp_new_background.save(back_file)
@@ -285,10 +283,38 @@ if os.path.isfile(background_file) :
 
   else:
     alpha_composite = alpha_composite.resize((gw_width,gw_height),Image.LANCZOS)
+
     alpha_composite.save(back_file)
+
+    img_jpeg_background=alpha_composite.copy()
+
+## Create JPEG background ###
+######################################################################################
+## remove black borders to reduce the file size ##
+  #get black pixels boolean
+
+  if rom.crop_jpeg_background_border :
+    image_mask = np.array(img_jpeg_background) != (0.,0.,0.)
+    image_mask=image_mask[:,:,1]
+    width, height = img_jpeg_background.size
+    mask0,mask1=image_mask.any(0),image_mask.any(1)
+    x0,x1=mask0.argmax(),width-mask0[::-1].argmax()
+    y0,y1=mask1.argmax(),height-mask1[::-1].argmax()
+
+    # crop right and bottom borders
+    bbox=(x0,y0,x1,y1)
+
+    img_jpeg_background = img_jpeg_background.crop(bbox)
+
+    # Create background data section in JPEG
+  img_jpeg_background.save(jpeg_background, optimize=True, quality=rom.jpeg_quality )
+
 
   # Create background data section in 16bits reduced space color
   pixels = list(alpha_composite.getdata())
+
+## Create RGB background ###
+######################################################################################
 
   with open(BGD_FILE, 'wb') as f:
     for pix in pixels:
@@ -309,9 +335,6 @@ if os.path.isfile(background_file) :
       b = (b_pix >> 3) & 0x1F
 
       f.write(pack('H', (r << 11) + (g << 5) + b))
-
-  # Create background data section in JPEG
-  alpha_composite.resize((gw_width,gw_height),Image.LANCZOS).save(jpeg_background, optimize=True,quality=jpeg_quality )
 
 else:
   # warm user
@@ -551,6 +574,9 @@ wr.close()
 wr = open(SGD_FILE_4BITS, 'w')
 wr.close()
 
+wr = open(SGD_FILE_2BITS, 'w')
+wr.close()
+
 #Get all objects from svg file using Inkscape
 #it's important to extract x,y coordinates from 'no shadow' segment file
 #because injecting drop shadow effect change original coordinates
@@ -781,12 +807,23 @@ with open(SGD_FILE, 'rb') as in_file:
 with open(SGD_FILE_4BITS, 'wb') as out_file:
   for msb,lsb in zip(segment_data_in[0::2],segment_data_in[1::2]):
 
-    lsb  = int((round (float((lsb))) / 16.0))
-    msb = int((round (float((msb))) / 16.0))
+    lsb = lsb >> 4
+    msb = msb >> 4
 
     segment_data_out = lsb | (msb <<4)
     out_file.write(pack("=B",segment_data_out))
+##### Create 2 bits segments value resolution file
+#remove LSB and pack 4 pixels as 1 byte
+with open(SGD_FILE_2BITS, 'wb') as out_file:
+  for lsb2,lsb,msb,msb2 in zip(segment_data_in[0::4],segment_data_in[1::4],segment_data_in[2::4],segment_data_in[3::4]):
 
+    lsbr = lsb >> 6
+    msbr = msb >> 6
+    lsbr2 = lsb2 >> 6
+    msbr2 = msb2 >> 6
+                  
+    segment_data_out = msbr2 << 6 | msbr << 4 | lsbr << 2 | lsbr2
+    out_file.write(pack("=B",segment_data_out))
 
 #### Create Segment Coordinates files
 out_filename = SGX_FILE
@@ -832,22 +869,27 @@ GW_FLAGS=0
 
 # flag_rendering_lcd_inverted @0
 if rom.flag_rendering_lcd_inverted :
-  GW_FLAGS|=1
+  GW_FLAGS|=1 
 
 # flag_sound @1..3
 GW_FLAGS|=(rom.flag_sound << 1) & 0xE
 
-# flag_segments_4bits @4
+# flag_segments_resolution_bits @4
 # replace the segment file with 4 bits resolution file
-if rom.flag_segments_4bits :
+if rom.flag_segments_resolution_bits == 4 :
   GW_FLAGS|= 0x10
   SGD_FILE=SGD_FILE_4BITS
+
+# replace the segment file with 2 bits resolution file
+if rom.flag_segments_resolution_bits == 2 :
+  GW_FLAGS|= 0x100
+  SGD_FILE=SGD_FILE_2BITS
 
 # flag_background_jpeg @5
 # If the background is compressed, remove it from the payload
 # The jpeg background is added right after the LZ4 payload
 
-if flag_background_jpeg :
+if rom.flag_background_jpeg :
   GW_FLAGS|=0x20
   BGD_FILE="xxx-xxx-x.empty"
 
@@ -978,7 +1020,7 @@ with open(final_rom_filename, "wb") as out_file:
   out_file.write(compressed_rom)
 
   #Append JPEG background (if it exists and flag_background_jpeg is set)
-  if os.path.exists(jpeg_background) & (flag_background_jpeg == True):
+  if os.path.exists(jpeg_background) & (rom.flag_background_jpeg == True):
     log('\tAdd JPEG background')
     with open(jpeg_background,"rb") as input_file:
       out_file.write( input_file.read())
