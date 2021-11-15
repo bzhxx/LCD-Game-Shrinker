@@ -46,7 +46,7 @@ grey_background_file = 'Background.png'
 bubbles_file = 'Bubbles.png'
 gradient_file = "Gradient.png"
 
-# experimental drop shadow effect on LCD segments
+# experimental drop shadow effect on LCD segment
 #rom.drop_shadow = True
 background_file_path = os.path.join(rom.mame_rom_dir, background_file)
 if os.path.isfile(background_file_path):
@@ -71,7 +71,7 @@ if os.path.isfile(background_file_path):
     img_background = Image.alpha_composite(img_background, background)
 
     # add bubbles
-    img_background = Image.alpha_composite(img_background, bubbles)
+    #img_background = Image.alpha_composite(img_background, bubbles)
 
     # add gradient
   #  img_background = Image.alpha_composite(img_background, gradient)
