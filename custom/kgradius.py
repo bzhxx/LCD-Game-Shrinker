@@ -28,30 +28,24 @@ import os
 import rom_config as rom
 if not os.path.isfile(os.path.join(rom.mame_rom_dir, rom.background_file)):
   rom.background_file = "bg.jpg"
-  rom.background_x = -58
-  rom.background_y = -36
-  rom.background_width = 1632
-  rom.background_height = 1189
+  rom.background_x = -204
+  rom.background_y = -132
+  rom.background_width = 1854
+  rom.background_height = 1365
 
   rom.screen_x = 0
   rom.screen_y = 0
-  rom.screen_width = 1524
+  rom.screen_width = 1420
   rom.screen_height = 1080
-
-K1 = rom.BTN_LEFT
-K2 = rom.BTN_UP
-K3 = rom.BTN_DOWN
-K4 = rom.BTN_RIGHT
-rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
-
-K1 = rom.BTN_TIME
-K2 = rom.BTN_B
-K3 = 0
-K4 = rom.BTN_A
-rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 K1 = rom.BTN_GAME
 K2 = 0
-K3 = 0
+K3 = rom.BTN_TIME
+K4 = rom.BTN_B
+rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+
+K1 = rom.BTN_UP
+K2 = rom.BTN_DOWN
+K3 = rom.BTN_A
 K4 = 0
-rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
+rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)

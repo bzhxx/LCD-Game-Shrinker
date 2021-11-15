@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """ ~LCD Game Shrinker~
@@ -28,15 +29,15 @@ import os
 import rom_config as rom
 if not os.path.isfile(os.path.join(rom.mame_rom_dir, rom.background_file)):
   rom.background_file = "bg.jpg"
-  rom.background_x = -58
-  rom.background_y = -36
-  rom.background_width = 1632
-  rom.background_height = 1189
+  rom.background_x = 0
+  rom.background_y = 0
+  rom.background_width = 1505
+  rom.background_height = 1080
 
-  rom.screen_x = 0
-  rom.screen_y = 0
-  rom.screen_width = 1524
-  rom.screen_height = 1080
+  rom.screen_x = -92
+  rom.screen_y = -87
+  rom.screen_width = 1756
+  rom.screen_height = 1293
 
 K1 = rom.BTN_LEFT
 K2 = rom.BTN_UP
