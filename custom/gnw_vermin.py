@@ -62,7 +62,7 @@ img_background = Image.alpha_composite(img_background, main_background)
 img_background = Image.alpha_composite(img_background, score_board)
 
 # add bubbles
-img_background = Image.alpha_composite(img_background, bubbles)
+#img_background = Image.alpha_composite(img_background, bubbles)
 
 # remove ALPHA channel
 img_background = img_background.convert('RGB')
