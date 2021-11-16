@@ -24,19 +24,8 @@ __author__ = "bzhxx"
 __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
-import os
-import rom_config as rom
-if not os.path.isfile(os.path.join(rom.mame_rom_dir, rom.background_file)):
-  rom.background_file = "bg.jpg"
-  rom.background_x = -58
-  rom.background_y = -36
-  rom.background_width = 1632
-  rom.background_height = 1189
 
-  rom.screen_x = 0
-  rom.screen_y = 0
-  rom.screen_width = 1524
-  rom.screen_height = 1080
+import rom_config as rom
 
 K1 = rom.BTN_LEFT
 K2 = rom.BTN_UP

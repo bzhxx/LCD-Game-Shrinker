@@ -366,7 +366,7 @@ def set_parameters(rom_name, mame_rom_dir):
         for x in layout_root:
 
             if str(x.tag) == 'view':
-                if (str(x.attrib).upper().find('BACK') > -1) & (str(x.attrib).upper().find('ONLY') > -1) & (str(x.attrib).upper().find('FAN') == -1):
+                if (( (str(x.attrib).upper().find('BACK') > -1) & (str(x.attrib).upper().find('ONLY') > -1) ) | (str(x.attrib).find('External Layout') > -1) ) & (str(x.attrib).upper().find('FAN') == -1):
                     log('START ----------------------------------------------------')
                     log(x.attrib)
                     # log('-BOUND-')
