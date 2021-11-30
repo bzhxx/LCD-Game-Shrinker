@@ -44,7 +44,7 @@ frame_file = 'Frame2.png'
 rom.overlay_file = 'Overlay.png'
 
 # experimental drop shadow effect on LCD segment
-rom.drop_shadow = True
+rom.drop_shadow = False
 background_file_path = os.path.join(rom.mame_rom_dir, background_file)
 if os.path.isfile(background_file_path):
 
