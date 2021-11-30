@@ -36,10 +36,10 @@ rom.ADD_TIME_SEC_LSB=59
 rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
 
 # Input R(4)
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
-K4 = 0
+K4 = rom.BTN_SHORTCUT_B_GAME
 rom.BTN_DATA[rom.R4] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # B & BA swap ?

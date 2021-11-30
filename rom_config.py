@@ -127,28 +127,31 @@ https://github.com/python-pillow/Pillow/blob/master/src/PIL/JpegPresets.py#L71
 ## flag_background_jpeg
 ## jpeg_quality
 
-## To get the highest resolution 
+## To get the highest resolution
 '''
 flag_segments_resolution_bits = 4
 flag_background_jpeg = False
 '''
 
-## To get the lowest ROM file size 
+## To get the lowest ROM file size
 '''
 flag_segments_resolution_bits = 2
 flag_background_jpeg = True
 jpeg_quality = 75
 '''
 
-## To reduce ROM file size (medium configuration) 
+## To reduce ROM file size (medium configuration)
 '''
 flag_segments_resolution_bits = 4
 flag_background_jpeg = True
 jpeg_quality = 90
 '''
 
+# Enable shortcut B+TIME and B+GAME to get TIME and ALARM
+shortcut_time_alarm = False
+
 # Customized segments resolution is 8bits(8), 4bits(4) or 2bits(2)
-flag_segments_resolution_bits = 4 
+flag_segments_resolution_bits = 4
 
 ## Set the 2 following seeting to True to get smaller rom files
 # select if the background is JPEG compressed (lossly) or compressed within ROM data as RGB565
@@ -285,6 +288,13 @@ BTN_A = 0x10
 BTN_B = 0x20
 BTN_TIME = 0x40
 BTN_GAME = 0x80
+
+BTN_SHORTCUT_B_TIME = 0x0
+BTN_SHORTCUT_B_GAME = 0x0
+
+if shortcut_time_alarm:
+  BTN_SHORTCUT_B_TIME = BTN_B + BTN_TIME
+  BTN_SHORTCUT_B_GAME = BTN_B + BTN_GAME
 
 # SM5A buttons according to R1..R4
 R1 = 0

@@ -88,7 +88,7 @@ if os.path.isfile(background_file_path):
 #rom.background_file   = "ballbg.png"
 
 # Input rom.R2 IN.0
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
 K4 = 0
@@ -98,4 +98,4 @@ rom.BTN_DATA[rom.R2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 rom.BTN_DATA[rom.BA] = rom.BTN_RIGHT + rom.BTN_A
 
 # input  B
-rom.BTN_DATA[rom.B] = rom.BTN_LEFT + rom.BTN_B
+rom.BTN_DATA[rom.B] = rom.BTN_LEFT

@@ -275,7 +275,7 @@ if os.path.isfile(background_file) :
 
     # Create background data section in RGB565
     tmp_new_background = Image.new(mode="RGB", size=(gw_width, gw_height),color=(0,0,0))
-    
+
     tmp_new_background.paste(alpha_composite, (mov_x, mov_y))
 
     tmp_new_background.save(back_file)
@@ -423,7 +423,7 @@ figure.save(seg_file)
 # filter definition for drop shadow effect
 filter_def = """
   <defs id="bzhxx_drop_shadow_fx">
-  <filter width="200%" height="200%" id="filter_drop_shadow">
+  <filter id="filter_drop_shadow" x="0" y="0" width="200%" height="200%">
    <feFlood flood-opacity="0.4" flood-color="rgb(0,0,0)" result="flood" id="feFlood1" />
    <feComposite in="SourceGraphic" in2="flood" operator="in" result="composite1" id="feComposite1" />
    <feGaussianBlur in="composite1" stdDeviation="6" result="blur" id="feGaussianBlur1" />
@@ -432,9 +432,23 @@ filter_def = """
   </filter>
  </defs>
 """
+filter2_def = """
+  <defs id="bzhxx_drop_shadow_fx2">
+    <filter id="filter2_drop_shadow" x="0" y="0" width="200%" height="200%">
+      <feFlood id="feFlood12" flood-opacity="0.4" result="result1" />
+      <feComposite in2="result1" id="feComposite12" in="SourceGraphic" result="composite11" operator="in" />
+      <feGaussianBlur in="composite11" stdDeviation="6" result="blur12" id="feGaussianBlur12" />
+      <feOffset dx="30" dy="30" id="feOffset12" result="result3" preserveAlpha="false" />
+      <feComposite in2="SourceGraphic" id="feComposite13" in="result3" operator="out" result="result4" />
+      <feComposite in2="SourceGraphic" id="feComposite14" in="result4" />
+  </filter>
+ </defs>
+"""
 
 # TODO: need to improve this to cover more cases
+search_string ="fill:#000000;fill-opacity:0.8"
 nofilter_string ="fill:#000000;fill-opacity:0.84705883"
+nofilter_string2="fill:#000000;fill-opacity:0.84705882"
 filter_string = "fill:#000000;fill-opacity:0.84705883;filter:url(#filter_drop_shadow)"
 
 svg_found = False
@@ -453,8 +467,10 @@ with open(seg_file,"r") as input_file :
         output_file.write(filter_def)
         filter_notinjected = False
 
-      if nofilter_string in content:
+      if search_string in content:
         content=content.replace(nofilter_string,filter_string)
+        content=content.replace(nofilter_string2,filter_string)
+
         output_file.write(content)
       else:
         output_file.write(content)
@@ -821,7 +837,7 @@ with open(SGD_FILE_2BITS, 'wb') as out_file:
     msbr = msb >> 6
     lsbr2 = lsb2 >> 6
     msbr2 = msb2 >> 6
-                  
+
     segment_data_out = msbr2 << 6 | msbr << 4 | lsbr << 2 | lsbr2
     out_file.write(pack("=B",segment_data_out))
 
@@ -869,7 +885,7 @@ GW_FLAGS=0
 
 # flag_rendering_lcd_inverted @0
 if rom.flag_rendering_lcd_inverted :
-  GW_FLAGS|=1 
+  GW_FLAGS|=1
 
 # flag_sound @1..3
 GW_FLAGS|=(rom.flag_sound << 1) & 0xE
@@ -971,7 +987,7 @@ with open(rom_filename, "wb") as out_file:
 
 
 if COMPRESS_WITH == ZLIB_COMPRESSOR:
-  ## Compress ROM file using zlib 
+  ## Compress ROM file using zlib
 
   c = zlib.compressobj(level=9, method=zlib.DEFLATED, wbits=-15, memLevel=9)
   compressed_rom = c.compress(Path(rom_filename).read_bytes()) + c.flush()
@@ -1009,7 +1025,7 @@ elif COMPRESS_WITH == LZMA_COMPRESSOR:
 final_rom_filename = final_rom_filename.replace(':','')
 
 with open(final_rom_filename, "wb") as out_file:
-  
+
   if COMPRESS_WITH == ZLIB_COMPRESSOR:
     out_file.write( b'ZLIB')
     out_file.write(pack("<l",len(compressed_rom)))

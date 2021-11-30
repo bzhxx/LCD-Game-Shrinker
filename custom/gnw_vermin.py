@@ -77,7 +77,7 @@ img_background.save(img_background_file)
 rom.flag_lcd_deflicker_level = 1
 
 # Input R(2)
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
 K4 = 0

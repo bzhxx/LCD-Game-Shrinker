@@ -91,10 +91,10 @@ else:
     rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # Input S3
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
-K4 = 0
+K4 = rom.BTN_SHORTCUT_B_GAME
 rom.BTN_DATA[rom.S3] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # convert it to a single screen

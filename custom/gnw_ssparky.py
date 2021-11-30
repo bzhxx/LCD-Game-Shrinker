@@ -23,6 +23,11 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 __author__ = "bzhxx"
 __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
+
+import os
+from PIL import Image
+from PIL import ImageOps
+from PIL import ImageChops
 from custom.rotate_screen import rotate_screen
 import rom_config as rom
 
@@ -47,6 +52,64 @@ rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
 #Enable the following line to rotate the screen rendering
 rom.rotate = True
 
+background_file = 'Background2.png'
+
+subtract_file = 'Subtract.png'
+overlay_file = 'Overlay.png'
+lines_file = 'Lines.png'
+frame_file = 'Frame2.png'
+
+background_file_path = os.path.join(rom.mame_rom_dir, background_file)
+if os.path.isfile(background_file_path):
+
+    background = Image.open(background_file_path)
+    frame = Image.open(os.path.join(rom.mame_rom_dir, frame_file))
+    subtract = Image.open(os.path.join(rom.mame_rom_dir, subtract_file))
+    overlay = Image.open(os.path.join(rom.mame_rom_dir, overlay_file))
+    lines = Image.open(os.path.join(rom.mame_rom_dir, lines_file))
+    #lines2 = Image.open(os.path.join(rom.mame_rom_dir, lines2_file))
+
+    #subtract = subtract.resize((background.size))
+    #frame = ImageOps.fit(frame,background.size,bleed=0.0,centering=(0.5,0.5))
+    #frame = frame.resize((background.size))
+#    lines = lines.resize((background.size))
+
+    # create an empty layer to mix images with ALPHA channel
+    img_layer = Image.new("RGBA", (background.size))
+
+    # add main background
+    img_layer = Image.alpha_composite(img_layer, background)
+
+    # add subtract
+    img_layer = ImageChops.multiply(img_layer, subtract)
+
+    # add overlay
+    img_layer = ImageChops.add(img_layer, overlay)
+
+    # create an empty image as background with ALPHA channel
+    img_background = Image.new("RGBA", (background.size))
+
+    img_background = Image.alpha_composite(img_background, background)
+    img_background.paste(img_layer,(0,0), overlay)
+
+    #add lines
+    #lines_tmp = Image.new("RGBA", (lines.size))
+
+    img_background.paste(lines,(0,0),lines)
+    #img_background = Image.blend(img_background,lines_tmp,0.1)
+
+    #add frames
+    img_background.paste(frame,(0,0),frame)
+
+    # remove ALPHA channel
+    img_background = img_background.convert('RGB')
+
+    # save it
+    rom.background_file = "composite.png"
+    img_background_file = os.path.join(rom.mame_rom_dir, rom.background_file)
+    img_background.save(img_background_file)
+
+
 if rom.rotate:
 
     K1 = rom.BTN_UP
@@ -64,8 +127,8 @@ else:
     K4 = 0
     rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
-K4 = 0
+K4 = rom.BTN_SHORTCUT_B_GAME
 rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)

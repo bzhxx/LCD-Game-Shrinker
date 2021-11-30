@@ -147,8 +147,8 @@ rom.BTN_DATA[rom.S6] = K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)
  """
 
 # Connect only "Game A" as a single player game to "GAME" button
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = 0
 K3 = rom.BTN_GAME
-K4 = 0
+K4 = rom.BTN_SHORTCUT_B_GAME
 rom.BTN_DATA[rom.S7] = K1 + (K2 << 8) + (K3 << 16) + (K4 << 24)

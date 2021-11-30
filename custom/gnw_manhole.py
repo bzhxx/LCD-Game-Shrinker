@@ -26,12 +26,12 @@ __license__ = "GPLv3"
 import rom_config as rom
 
 # Patch address to synchronize TIME with RTC host
-rom.ADD_TIME_HOUR_MSB=54
-rom.ADD_TIME_HOUR_LSB=55
-rom.ADD_TIME_MIN_MSB=56
-rom.ADD_TIME_MIN_LSB=57
-rom.ADD_TIME_SEC_MSB=58
-rom.ADD_TIME_SEC_LSB=59
+rom.ADD_TIME_HOUR_MSB=10
+rom.ADD_TIME_HOUR_LSB=11
+rom.ADD_TIME_MIN_MSB=12
+rom.ADD_TIME_MIN_LSB=13
+rom.ADD_TIME_SEC_MSB=14
+rom.ADD_TIME_SEC_LSB=15
 rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
 
 rom.flag_lcd_deflicker_level = 0
@@ -42,8 +42,8 @@ K3 = rom.BTN_LEFT + rom.BTN_UP
 K4 = rom.BTN_LEFT + rom.BTN_DOWN
 rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
-K1 = 0
+K1 = rom.BTN_SHORTCUT_B_TIME
 K2 = rom.BTN_TIME
 K3 = rom.BTN_GAME
-K4 = 0
+K4 = rom.BTN_SHORTCUT_B_GAME
 rom.BTN_DATA[rom.S2] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
