@@ -35,7 +35,7 @@ rom.ADD_TIME_MIN_MSB=3
 rom.ADD_TIME_MIN_LSB=2
 rom.ADD_TIME_SEC_MSB=1
 rom.ADD_TIME_SEC_LSB=0
-rom.ADD_TIME_HOUR_MSB_PM_VALUE = 8
+rom.ADD_TIME_HOUR_MSB_PM_VALUE = 2
 
 #Enable the following line to rotate the screen rendering
 rom.rotate = True
