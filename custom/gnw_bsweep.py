@@ -27,12 +27,12 @@ __license__ = "GPLv3"
 import rom_config as rom
 
 # Patch address to synchronize TIME with RTC host
-rom.ADD_TIME_HOUR_MSB=17
-rom.ADD_TIME_HOUR_LSB=18
-rom.ADD_TIME_MIN_MSB=19
-rom.ADD_TIME_MIN_LSB=20
-rom.ADD_TIME_SEC_MSB=21
-rom.ADD_TIME_SEC_LSB=22
+rom.ADD_TIME_HOUR_MSB=16
+rom.ADD_TIME_HOUR_LSB=17
+rom.ADD_TIME_MIN_MSB=18
+rom.ADD_TIME_MIN_LSB=19
+rom.ADD_TIME_SEC_MSB=20
+rom.ADD_TIME_SEC_LSB=21
 rom.ADD_TIME_HOUR_MSB_PM_VALUE = 2
 
 from custom.rotate_screen import rotate_screen
@@ -58,14 +58,14 @@ if rom.rotate:
     # define width and height borders to keep an acceptable ratio
     rom.width_border_ratio = 0
     rom.height_border_ratio = 0
-    
+
     # Input S1
     K1 = rom.BTN_UP
     K2 = rom.BTN_RIGHT
     K3 = rom.BTN_DOWN
     K4 = rom.BTN_LEFT
     rom.BTN_DATA[rom.S1] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
-   
+
 else:
 
     # define width and height borders to keep an acceptable ratio
