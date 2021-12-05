@@ -189,11 +189,12 @@ def set_parameters(rom_name, mame_rom_dir):
     ###################################################
 
     mame_driver_file = os.path.join("./build/", "hh_sm510.cpp")
-    url = "https://raw.githubusercontent.com/mamedev/mame/master/src/mame/drivers/hh_sm510.cpp"
+    url_master = "https://raw.githubusercontent.com/mamedev/mame/master/src/mame/drivers/hh_sm510.cpp"
+    url_tested= "https://raw.githubusercontent.com/mamedev/mame/aaef28cd47db02b2b66359a49ca50c4ffaed464c/src/mame/drivers/hh_sm510.cpp"
 
     #print('Beginning file download from MAME github...')
     if not os.path.isfile(mame_driver_file):
-        urllib.request.urlretrieve(url, mame_driver_file)
+        urllib.request.urlretrieve(url_tested, mame_driver_file)
 
     if not os.path.isfile(mame_driver_file):
         error("Please copy hh_sm510.cpp in build directory")
