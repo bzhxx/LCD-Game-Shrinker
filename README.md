@@ -10,18 +10,21 @@ Finally, a compressed data file is created including all relevant information fo
 
 
 # Environment
-Python (3.6) script tested under Linux Ubuntu and Windows 10.
+Python (3.6) script tested under Linux Ubuntu, MacOS Big Sur and Windows 10.
 
 # Requirements
 The following application need to be installed
  - [x] Inkscape (v1.02 or v1.10 recommended) https://inkscape.org
+ 
+   - Note: For the scripts to find Inkscape on mac, run `ln -s /Applications/Inkscape.app/Contents/Resources/bin/inkscape /usr/local/bin/inkscape` in a terminal
 
 The following Python modules are used
  - [x] import sys, os, subprocess, re, lxml, importlib, zipfile, numpy, urllib.request, svgutils 
  - [x] from struct import pack
  - [x] from PIL import Image,ImageChops
 
-
+Install using `python3 -m pip install -r requirements.txt`
+ 
 ## Usage
 ### MAME Artworks and ROMs
 This tool is used to shrink any MAME artwork and ROM **SM510** family.
@@ -29,6 +32,7 @@ You have to place Artwork file and ROM file in their respective directory **inpu
 
 Design, layout and artwork by *hydef* or *DarthMarino* are recommended.
 [www.mameworld.info](https://www.mameworld.info/ubbthreads/showflat.php?Cat=&Number=382366&page=0&view=expanded&sb=5&o=&fpart=2&vc=1&new=)
+
 
 
 ### Execute
