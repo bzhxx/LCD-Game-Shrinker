@@ -29,7 +29,7 @@ from struct import pack
 from PIL import Image,ImageChops
 
 import importlib
-
+import shutil
 import svgutils
 import zipfile
 import zlib
@@ -37,7 +37,7 @@ import lz4.frame as lz4
 from pyunpack import Archive
 import numpy as np
 
-#ROM default defintion & parser
+# ROM default definition & parser
 import rom_config as rom
 import rom_parser
 
@@ -137,7 +137,15 @@ osmkdir(output_dir)
 #unzip original rom
 if rom_file.endswith(".zip"):
     with zipfile.ZipFile(rom_file, 'r') as zip_ref:
-        zip_ref.extractall(rom.mame_rom_dir)
+        for member in zip_ref.namelist():
+            filename = os.path.basename(member)
+            # discard folder structure in the zip file and put everything in the parent folder
+            if not filename:
+                continue
+            source = zip_ref.open(member)
+            target = open(os.path.join(rom.mame_rom_dir, filename), "wb")
+            with source, target:
+                shutil.copyfileobj(source, target)
 elif rom_file.endswith(".7z"):
     Archive(rom_file).extractall(rom.mame_rom_dir)
 else:
