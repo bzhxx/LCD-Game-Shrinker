@@ -34,7 +34,7 @@ K4 = 0
 rom.BTN_DATA[rom.R4] = K1 | (K2 << 8) | (K3 << 16) | (K4 << 24)
 
 # input  B
-rom.BTN_DATA[rom.B] = rom.BTN_LEFT
+rom.BTN_DATA[rom.B] = rom.BTN_RIGHT + rom.BTN_A
 
 # input BA
-rom.BTN_DATA[rom.BA] = rom.BTN_RIGHT + rom.BTN_A
+rom.BTN_DATA[rom.BA] = rom.BTN_LEFT + rom.BTN_B

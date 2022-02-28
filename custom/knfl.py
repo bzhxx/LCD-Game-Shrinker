@@ -25,6 +25,7 @@ __contact__ = "https://github.com/bzhxx"
 __license__ = "GPLv3"
 
 import rom_config as rom
+rom.background_file = "bg.jpg"
 
 K1 = rom.BTN_LEFT
 K2 = rom.BTN_UP
