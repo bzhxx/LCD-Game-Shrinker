@@ -110,7 +110,7 @@ if os.path.isdir(rom_file) :
   ## call this script for each file
   for x in os.listdir(rom_file) :
     if x.endswith(".zip") or x.endswith(".7z"):
-      os.system(sys.executable +" "+ sys.argv[0] + ' ' + os.path.join(rom_path, str(x)))
+      subprocess.run([sys.executable, sys.argv[0], os.path.join(rom_path, str(x))])
   exit()
 
 printProgressBar(0, 1, prefix = rom_name.ljust(25), suffix = 'Unzip')
